@@ -18,10 +18,32 @@ function draw() {
 	var user = dict.user;
 	
 	if (isIPaddress(user)) {
-	    console.log(user)
-	}
+	    var url = "http://freegeoip.net/json/" + user;
+	    //convert ip address to geolocation (lat, lon coordinates)
+	    getJSON(url, function(err,data) {
+		lat = data.latitude;
+		lon = data.longitude;
+		console.log("lat : " + lat + " , " + "lon : " + lon);
+		return [lat,lon];
+	    });
+	};
     };
 
+    function getJSON(url, callback) {
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', url, true);
+	xhr.responseType = 'json';
+	xhr.onload = function() {
+	    var status = xhr.status;
+	    if (status == 200) {
+		callback(null, xhr.response);
+	    } else {
+		callback(status);
+	    }
+	};
+	xhr.send();
+    };
+    
     function isIPaddress(user) {
 	var segments = user.split(".");
 	if(segments.length === 4) {
