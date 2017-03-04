@@ -14,7 +14,22 @@ function draw() {
 
     eventSource.onmessage = function(event) {
 	// event.data will be a JSON string containing the message event.
-	console.log(JSON.parse(event.data));
+	var dict = JSON.parse(event.data);
+	var user = dict.user;
+	
+	if (isIPaddress(user)) {
+	    console.log(user)
+	}
     };
+
+    function isIPaddress(user) {
+	var segments = user.split(".");
+	if(segments.length === 4) {
+	    return segments.every(function(segment) {
+		return parseInt(segment,10) >=0 && parseInt(segment,10) <= 255;
+	    });
+	}
+	return false;
+    }
 }
 
