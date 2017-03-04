@@ -20,6 +20,10 @@ function draw() {
 	if (isIPaddress(user)) {
 	    var url = "http://freegeoip.net/json/" + user;
 	    //convert ip address to geolocation (lat, lon coordinates)
+	    //note while this is ok for development, there is a limit of 15000 requests
+	    //per hour -> will need to deploy own instance of freegeoip web server to heroku
+	    //for production
+	    //see https://github.com/fiorix/freegeoip on how to do this
 	    getJSON(url, function(err,data) {
 		lat = data.latitude;
 		lon = data.longitude;
