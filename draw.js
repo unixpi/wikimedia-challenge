@@ -56,9 +56,6 @@ function draw() {
 	var url = 'https://stream.wikimedia.org/v2/stream/recentchange';
 	var edits = [];
 	var queue = [];
-//	var enwikicount = 0;
-//	var otherwikicount = 0;
-	    
 
 	console.log('Connecting to EventStreams at ' + url);
 	var eventSource = new EventSource(url);
@@ -75,33 +72,28 @@ function draw() {
 	    // event.data will be a JSON string containing the message event.
 	    var dict = JSON.parse(event.data);
 	    var user = dict.user;
-//	    console.log(dict.wiki);
-
-
-//	    dict.wiki === "enwiki" ? enwikicount++ : otherwikicount++;
-
-//	    if (dict.type === "new") { console.log(dict.title) }
 	    
-	    if (isIPaddress(user) && dict.type === "edit" && dict.wiki === "enwiki") {
-//		console.log(Math.abs(dict.length["new"] - dict.length["old"]));
-//		console.log("en " + enwikicount);
-//		console.log("fo " + otherwikicount);
+	    if (isIPaddress(user) && dict.type === "edit") {
+
 		var url = "http://freegeoip.net/json/" + user;
 		//convert ip address to geolocation (lat, lon coordinates)
 		//note while this is ok for development, there is a limit of 15000 requests
 		//per hour -> will need to deploy own instance of freegeoip web server to heroku
 		//for production
 		//see https://github.com/fiorix/freegeoip on how to do this
-		getJSON(url, function(err,data) {
-		    lat = data.latitude;
-		    lon = data.longitude;
-		    dict.latLong = [lon,lat];
-		    dict.magnitude = (dict.length["new"] - dict.length["old"]);
-//		    console.log("lat : " + lat + " , " + "lon : " + lon);
-		    //		    if (queue.length === 0) { queue.push(dict); }
-		    queue.push(dict);
-//		    console.log(queue.length);
-		});
+
+		//if queue is running low,
+		//make a request for lat lon co-ordinates and add datum to queue
+		if (queue.length < 5) {
+		    getJSON(url, function(err,data) {
+			lat = data.latitude;
+			lon = data.longitude;
+			dict.latLong = [lon,lat];
+			dict.magnitude = (dict.length["new"] - dict.length["old"]);
+			queue.push(dict);
+			//		    console.log(queue.length);
+		    });
+		}
 	    };
 	};
 	var totalEdits = 0;
