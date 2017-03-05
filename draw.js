@@ -107,6 +107,8 @@ function draw() {
 	var totalEdits = 0;
 	var positiveEdits = 0;
 	var negativeEdits = 0;
+	var positiveBytes = 0
+	var negativeBytes = 0
 
 	//every 5 seconds check queue array to see if you have received an edit,
 	//if you have, remove it from queue array, add its coordinates to map
@@ -115,22 +117,33 @@ function draw() {
 	    if (edit) {
 		console.log(edit.magnitude);
 		edits.push(edit.latLong);
-
+		
 		//if the magnitude of the edit is zero,
 		//randomly classify it as positive or negative
 		if (edit.magnitude == 0) { edit.magnitude = Math.random() < 0.5 ? edit.magnitude++ :
 					 edit.magnitude--}
+
+		var bytes = edit.magnitude;
+		bytes < 0 ? negativeBytes += bytes : positiveBytes += bytes;
 		
 		var sign = edit.magnitude < 0 ? "N" : "P";
 		totalEdits++;
 		sign === "N" ? negativeEdits++ : positiveEdits++;
 		console.log("total edits " + totalEdits);
+
 		document.getElementById('negativeCount').innerHTML =
 		    (Math.round((negativeEdits / totalEdits) * 100) + "%");
 
 		document.getElementById('positiveCount').innerHTML =
 		    (Math.round((positiveEdits / totalEdits) * 100) + "%");
 
+		document.getElementById('negativeBytes').innerHTML =
+		    (Math.round((negativeBytes / negativeEdits)) + " Bytes");
+
+		document.getElementById('positiveBytes').innerHTML =
+		    (Math.round((positiveBytes / positiveEdits)) + " Bytes");
+
+		
 		d3.transition()
 		    .duration(2500)
 		    .tween("rotate", function() {

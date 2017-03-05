@@ -44,10 +44,34 @@ canvas {
 
 .Negative {
     padding: 5px;
-    background: rgb(227, 38, 54);
+    background: rgba(227, 38, 54,0.8);
     border-radius: 3px;
     color: white;
     width: 110px;
+}
+
+.averagePos {
+    padding: 5px;
+    border-radius: 3px;
+    background: rgba(0,0,200,0.5);
+    width: 150px;
+    color: white;
+}
+
+.averageNeg {
+    padding: 5px;
+    border-radius: 3px;
+    color: white;
+    width: 150px;
+    background: rgba(227, 38, 54,0.8);
+}
+
+.counter {
+    margin-bottom: 0.5rem;
+}
+
+.bytesCounter {
+    margin-bottom: 0.5rem;
 }
 
 #negativeCount {
@@ -58,11 +82,27 @@ canvas {
     float: right;
 }
 
+#negativeBytes {
+    float: right;
+}
+
+#positiveBytes {
+    float: right;
+}
 
 .countersWrapper {
+    margin-left: 0.65rem;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
-    width: 350px;
+    width: 120px;
+    display: inline-block;
+}
+
+.bytesWrapper {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    width: 180px;
+    display: inline-block;
 }
 
 .main-title {
