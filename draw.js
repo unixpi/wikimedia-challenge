@@ -1,9 +1,7 @@
 function draw() {
-
-    var loaded = false;
     var width = 350;
     var height = 400;
-    
+    var caption = d3.select(".caption"); 
     var projection = d3.geo.orthographic()
 	.translate([width / 2, height / 2])
 	.scale(width / 2 - 10)
@@ -91,7 +89,7 @@ function draw() {
 			dict.latLong = [lon,lat];
 			dict.magnitude = (dict.length["new"] - dict.length["old"]);
 			queue.push(dict);
-			//		    console.log(queue.length);
+			console.log("queue length is " + queue.length);
 		    });
 		}
 	    };
@@ -124,24 +122,31 @@ function draw() {
 		sign === "N" ? negativeEdits++ : positiveEdits++;
 		console.log("total edits " + totalEdits);
 
-		document.getElementById('negativeCount').innerHTML =
-		    (Math.round((negativeEdits / totalEdits) * 100) + "%");
+		window.setTimeout( function() {
+		    document.getElementById('negativeCount').innerHTML =
+			(Math.round((negativeEdits / totalEdits) * 100) + "%");
 
-		document.getElementById('positiveCount').innerHTML =
-		    (Math.round((positiveEdits / totalEdits) * 100) + "%");
+		    document.getElementById('positiveCount').innerHTML =
+			(Math.round((positiveEdits / totalEdits) * 100) + "%");
 
-		if (negativeBytes < 0) {
-		    document.getElementById('negativeBytes').innerHTML =
-			(Math.round((negativeBytes / negativeEdits)) + " Bytes");
-		}
+		    if (negativeBytes < 0) {
+			document.getElementById('negativeBytes').innerHTML =
+			    (Math.abs(Math.round((negativeBytes / negativeEdits))) + " bytes");
+		    }
 
-		if (positiveBytes > 0) {
-		    document.getElementById('positiveBytes').innerHTML =
-			(Math.round((positiveBytes / positiveEdits)) + " Bytes");
-		}
+		    if (positiveBytes > 0) {
+			document.getElementById('positiveBytes').innerHTML =
+			    (Math.round((positiveBytes / positiveEdits)) + " bytes");
+		    }
+		}, 2000);
 
 		d3.transition()
 		    .duration(2500)
+		    .each("start", function() {
+			var absBytes = Math.abs(+bytes);
+			var suffix = (absBytes === 1) ? " byte" : " bytes";
+			caption.html(edit.title + " (" + Math.abs(+bytes) + suffix + ")");
+		    })
 		    .tween("rotate", function() {
 			var p = edit.latLong,
 				r = d3.interpolate(projection.rotate(), [-p[0], -p[1]]);
@@ -182,16 +187,6 @@ function draw() {
 				    c.stroke();
 				}
 				setRadius(3 + 1.5 * (t * Math.log(Math.abs(edit.magnitude) + 1)), sign);
-				
-				//received , and draw a circle there.
-
-				// draw the circle associated with the latest edit slightly bigger
-//				c.fillStyle = "orange",
-//				c.beginPath(),
-//				c.arc(center[0], center[1],5, 0, 2 * Math.PI, false),
-//				c.lineWidth = 0.5,
-//				c.fill(),
-//				c.stroke();
 			    } 
 		    });
 	    }

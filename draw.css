@@ -26,6 +26,16 @@ canvas {
     margin-top: -0.6rem;
 }
 
+.caption {
+    position: absolute;
+    top: 220px;
+    margin-left: 20px;
+    width: 320px;
+    text-align: center;
+    color: (54,69,79);
+    font-weight: 600;
+}
+
 #stats-container {
     width: 350px;
     margin-left: 1rem;
