@@ -96,7 +96,7 @@ function draw() {
 		    lat = data.latitude;
 		    lon = data.longitude;
 		    dict.latLong = [lon,lat];
-		    dict.magnitude = Math.abs(dict.length["new"] - dict.length["old"]);
+		    dict.magnitude = (dict.length["new"] - dict.length["old"]);
 //		    console.log("lat : " + lat + " , " + "lon : " + lon);
 		    //		    if (queue.length === 0) { queue.push(dict); }
 		    queue.push(dict);
@@ -141,16 +141,17 @@ function draw() {
 				c.stroke();
 				// Get the canvas-coordinates of the latLong points associated with the latest edit we have
 				var center = projection(p);
+				var sign = edit.magnitude < 0 ? "N" : "P";
 				function setRadius(r) {
 				    if (r == 0) { r = 3 };
-				    c.fillStyle = "rgba(0,0,200,0.5)",
+				    c.fillStyle = sign === "P" ? "rgba(0,0,200,0.5)" : "red",
 				    c.beginPath(),
 				    c.arc(center[0], center[1],r, 0, 2 * Math.PI, false),
 				    c.lineWidth = 0.5,
 				    c.fill(),
 				    c.stroke();
 				}
-				setRadius(3 + 1.5 * (t * Math.log(edit.magnitude + 1)));
+				setRadius(3 + 1.5 * (t * Math.log(Math.abs(edit.magnitude) + 1)), sign);
 				
 				//received , and draw a circle there.
 
