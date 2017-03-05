@@ -1,4 +1,57 @@
 function draw() {
+
+    var loaded = false;
+    var width = 350;
+    var height = 400;
+    
+    var projection = d3.geo.orthographic()
+	.translate([width / 2, height / 2])
+	.scale(width / 2 - 10)
+	.clipAngle(90)
+	.precision(0.6);
+
+    var canvas = d3.select('#canvas-container').append("canvas")
+	.attr("width", width)
+	.attr("height", height);
+
+    var c = canvas.node().getContext("2d");
+
+    var path = d3.geo.path()
+     .projection(projection)
+     .context(c);
+
+    canvas.append("path")
+     .datum({type: "Sphere"})
+     .attr("class", "water")
+     .attr("d", path);
+
+    var title = d3.select(".title");
+
+    var countryFill = "lightsteelblue";
+
+    d3.json("world-110m.json", function(world) {
+	var globe = {type: "Sphere"},
+	    land = topojson.feature(world, world.objects.land),
+	    countries = topojson.feature(world, world.objects.countries).features,
+	    borders = topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; });
+
+	d3.transition()
+	    .duration(5000)
+	    .each("start", function() {
+	    })
+		.tween("rotate", function() {
+		    r = d3.interpolate(projection.rotate(), [0,0]);
+		    return function(t) {
+			//rotate globe and draw countries
+			projection.rotate(r(t));
+			c.clearRect(0, 0, width, height);
+			c.fillStyle = countryFill, c.beginPath(), path(land), c.fill();
+			c.strokeStyle = "white", c.lineWidth = 1, c.beginPath(), path(borders), c.stroke();
+			c.lineWidth= 0.5, c.shadowBlur = 1, c.shadowColor="lightgrey", c.beginPath(), path(globe), c.stroke();
+		    };
+		});
+    });
+
     var url = 'https://stream.wikimedia.org/v2/stream/recentchange';
 
     console.log('Connecting to EventStreams at ' + url);
@@ -57,5 +110,6 @@ function draw() {
 	}
 	return false;
     }
+
 }
 

@@ -1,11 +1,18 @@
 <!DOCTYPE HTML>
 <html>
   <head>
+    <title>Trump Twitter Sentiment</title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=yes" name="viewport">
+    <script src="//d3js.org/d3.v3.min.js"></script>
+    <script src="//d3js.org/topojson.v1.min.js"></script>
     <script src="draw.js"></script>
     <link rel="stylesheet" href="draw.css">
   </head>
   <body>
     <div class="container">
+      <div id="canvas-container">
+      </div>
     </div>
     <script>
       document.addEventListener("DOMContentLoaded", function(event) {
