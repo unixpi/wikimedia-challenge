@@ -120,8 +120,9 @@ function draw() {
 		
 		//if the magnitude of the edit is zero,
 		//randomly classify it as positive or negative
-		if (edit.magnitude == 0) { edit.magnitude = Math.random() < 0.5 ? edit.magnitude++ :
-					 edit.magnitude--}
+		if (edit.magnitude == 0) {
+		   Math.random() < 0.5 ? edit.magnitude++ : edit.magnitude--
+		}
 
 		var bytes = edit.magnitude;
 		bytes < 0 ? negativeBytes += bytes : positiveBytes += bytes;
@@ -137,13 +138,16 @@ function draw() {
 		document.getElementById('positiveCount').innerHTML =
 		    (Math.round((positiveEdits / totalEdits) * 100) + "%");
 
-		document.getElementById('negativeBytes').innerHTML =
-		    (Math.round((negativeBytes / negativeEdits)) + " Bytes");
+		if (negativeBytes < 0) {
+		    document.getElementById('negativeBytes').innerHTML =
+			(Math.round((negativeBytes / negativeEdits)) + " Bytes");
+		}
 
-		document.getElementById('positiveBytes').innerHTML =
-		    (Math.round((positiveBytes / positiveEdits)) + " Bytes");
+		if (positiveBytes > 0) {
+		    document.getElementById('positiveBytes').innerHTML =
+			(Math.round((positiveBytes / positiveEdits)) + " Bytes");
+		}
 
-		
 		d3.transition()
 		    .duration(2500)
 		    .tween("rotate", function() {
