@@ -46,14 +46,19 @@ function draw() {
 			projection.rotate(r(t));
 			c.clearRect(0, 0, width, height);
 			c.fillStyle = countryFill, c.beginPath(), path(land), c.fill();
-			c.strokeStyle = "white", c.lineWidth = 1, c.beginPath(), path(borders), c.stroke();
-			c.lineWidth= 0.5, c.shadowBlur = 1, c.shadowColor="lightgrey", c.beginPath(), path(globe), c.stroke();
+			c.strokeStyle = "white", c.lineWidth = 1, c.beginPath(), path(borders),
+			c.stroke();
+			c.lineWidth= 0.5, c.shadowBlur = 1, c.shadowColor="lightgrey", c.beginPath(),
+			path(globe), c.stroke();
 		    };
 		});
 
 	var url = 'https://stream.wikimedia.org/v2/stream/recentchange';
 	var edits = [];
 	var queue = [];
+//	var enwikicount = 0;
+//	var otherwikicount = 0;
+	    
 
 	console.log('Connecting to EventStreams at ' + url);
 	var eventSource = new EventSource(url);
@@ -70,8 +75,17 @@ function draw() {
 	    // event.data will be a JSON string containing the message event.
 	    var dict = JSON.parse(event.data);
 	    var user = dict.user;
+//	    console.log(dict.wiki);
 
-	    if (isIPaddress(user)) {
+
+//	    dict.wiki === "enwiki" ? enwikicount++ : otherwikicount++;
+
+//	    if (dict.type === "new") { console.log(dict.title) }
+	    
+	    if (isIPaddress(user) && dict.type === "edit" && dict.wiki === "enwiki") {
+//		console.log(Math.abs(dict.length["new"] - dict.length["old"]));
+//		console.log("en " + enwikicount);
+//		console.log("fo " + otherwikicount);
 		var url = "http://freegeoip.net/json/" + user;
 		//convert ip address to geolocation (lat, lon coordinates)
 		//note while this is ok for development, there is a limit of 15000 requests
@@ -81,20 +95,24 @@ function draw() {
 		getJSON(url, function(err,data) {
 		    lat = data.latitude;
 		    lon = data.longitude;
-		    data.latLong = [lon,lat]
+		    dict.latLong = [lon,lat];
+		    dict.magnitude = Math.abs(dict.length["new"] - dict.length["old"]);
 //		    console.log("lat : " + lat + " , " + "lon : " + lon);
-		    queue.push(data)
+		    //		    if (queue.length === 0) { queue.push(dict); }
+		    queue.push(dict);
+//		    console.log(queue.length);
 		});
 	    };
 	};
 	//every 5 seconds check queue array to see if you have received an edit,
 	//if you have, remove it from queue array, add its coordinates to map
-	setInterval(function() {
+	window.setInterval(function() {
 	    var edit = queue.shift();
 	    if (edit) {
+		console.log(edit.magnitude);
 		edits.push(edit.latLong);
 		d3.transition()
-		    .duration(3000)
+		    .duration(2500)
 		    .tween("rotate", function() {
 			var p = edit.latLong,
 				r = d3.interpolate(projection.rotate(), [-p[0], -p[1]]);
@@ -122,15 +140,27 @@ function draw() {
 				path(globe),
 				c.stroke();
 				// Get the canvas-coordinates of the latLong points associated with the latest edit we have
-				//received , and draw a circle there.
 				var center = projection(p);
+				function setRadius(r) {
+				    if (r == 0) { r = 3 };
+				    c.fillStyle = "rgba(0,0,200,0.5)",
+				    c.beginPath(),
+				    c.arc(center[0], center[1],r, 0, 2 * Math.PI, false),
+				    c.lineWidth = 0.5,
+				    c.fill(),
+				    c.stroke();
+				}
+				setRadius(3 + 1.5 * (t * Math.log(edit.magnitude + 1)));
+				
+				//received , and draw a circle there.
+
 				// draw the circle associated with the latest edit slightly bigger
-				c.fillStyle = "orange",
-				c.beginPath(),
-				c.arc(center[0], center[1],5, 0, 2 * Math.PI, false),
-				c.lineWidth = 0.5,
-				c.fill(),
-				c.stroke();
+//				c.fillStyle = "orange",
+//				c.beginPath(),
+//				c.arc(center[0], center[1],5, 0, 2 * Math.PI, false),
+//				c.lineWidth = 0.5,
+//				c.fill(),
+//				c.stroke();
 			    } 
 		    });
 	    }
