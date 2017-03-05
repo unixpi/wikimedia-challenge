@@ -25,3 +25,58 @@ canvas {
     margin: 0 auto;
     margin-top: -0.6rem;
 }
+
+#stats-container {
+    width: 350px;
+    margin-left: 1rem;
+    height: 450px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.Positive {
+    background: rgba(0,0,200,0.5);
+    padding: 5px;
+    border-radius: 3px;
+    color: white;
+    width: 110px;
+}
+
+.Negative {
+    padding: 5px;
+    background: rgb(227, 38, 54);
+    border-radius: 3px;
+    color: white;
+    width: 110px;
+}
+
+#negativeCount {
+    float: right;
+}
+
+#positiveCount {
+    float: right;
+}
+
+
+.countersWrapper {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    width: 350px;
+}
+
+.main-title {
+    display: inline-block;
+    font-size: 1.2rem;
+    margin-top: 0rem;
+    padding: 6px;
+    text-align: center;
+    width: 295px;
+    background: rgb(102, 153, 204);
+    border-radius: 3px;
+    color: white;
+    font-weight: 400;
+}
+
+
+

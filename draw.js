@@ -104,6 +104,10 @@ function draw() {
 		});
 	    };
 	};
+	var totalEdits = 0;
+	var positiveEdits = 0;
+	var negativeEdits = 0;
+
 	//every 5 seconds check queue array to see if you have received an edit,
 	//if you have, remove it from queue array, add its coordinates to map
 	window.setInterval(function() {
@@ -111,6 +115,22 @@ function draw() {
 	    if (edit) {
 		console.log(edit.magnitude);
 		edits.push(edit.latLong);
+
+		//if the magnitude of the edit is zero,
+		//randomly classify it as positive or negative
+		if (edit.magnitude == 0) { edit.magnitude = Math.random() < 0.5 ? edit.magnitude++ :
+					 edit.magnitude--}
+		
+		var sign = edit.magnitude < 0 ? "N" : "P";
+		totalEdits++;
+		sign === "N" ? negativeEdits++ : positiveEdits++;
+		console.log("total edits " + totalEdits);
+		document.getElementById('negativeCount').innerHTML =
+		    (Math.round((negativeEdits / totalEdits) * 100) + "%");
+
+		document.getElementById('positiveCount').innerHTML =
+		    (Math.round((positiveEdits / totalEdits) * 100) + "%");
+
 		d3.transition()
 		    .duration(2500)
 		    .tween("rotate", function() {
@@ -140,11 +160,12 @@ function draw() {
 				path(globe),
 				c.stroke();
 				// Get the canvas-coordinates of the latLong points associated with the latest edit we have
-				var center = projection(p);
-				var sign = edit.magnitude < 0 ? "N" : "P";
+				var center = projection(p);				
+
 				function setRadius(r) {
 				    if (r == 0) { r = 3 };
-				    c.fillStyle = sign === "P" ? "rgba(0,0,200,0.5)" : "red",
+				    c.fillStyle = sign === "P" ? "rgba(0,0,200,0.5)" :
+					"rgba(227, 38, 54,0.7)",
 				    c.beginPath(),
 				    c.arc(center[0], center[1],r, 0, 2 * Math.PI, false),
 				    c.lineWidth = 0.5,
