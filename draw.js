@@ -1,9 +1,15 @@
 function draw() {
 
     //STATE
-    var queue = [];
-    var anonEditsCounter = 0;
-    
+    var queue = [];   
+    var totalEditsAnon = 0;
+    var positiveEditsAnon = 0;
+    var negativeEditsAnon = 0;
+    var positiveBytesAnon = 0
+    var negativeBytesAnon = 0
+
+
+    //END OF STATE
 
     //SETUP    
     var width = 350;
@@ -42,47 +48,86 @@ function draw() {
 	console.error('--- Encountered error', event);
     };
 
+
     eventSource.onmessage = function(event) {
 	// event.data will be a JSON string containing the message event.
 	var dict = JSON.parse(event.data);
 	var user = dict.user;
-
+	
 	//check if user is anonymous and has edited a page
 	if (isIPaddress(user) && dict.type === "edit") {
-	    anonEditsCounter++;
-	    document.getElementById('anonTotalEdits').innerHTML = anonEditsCounter;
-	    var url = "http://freegeoip.net/json/" + user;
-
-	    //convert ip address to geolocation (lat, lon coordinates)
-	    //note while this is ok for development, there is a limit of 15000 requests
-	    //per hour -> will need to deploy own instance of freegeoip web server to heroku
-	    //for production
-	    //see https://github.com/fiorix/freegeoip on how to do this
-
-	    //if queue is running low,
-	    //make a request for lat lon co-ordinates and add datum to queue
-	    if (queue.length < 5) {
-		getJSON(url, function(err,data) {
-		    lat = data.latitude;
-		    lon = data.longitude;
-		    dict.latLong = [lon,lat];
-		    dict.magnitude = (dict.length["new"] - dict.length["old"]);
-		    queue.push(dict);
-		    console.log("queue length is " + queue.length);
-		});
-	    }
+	    var magnitude = (dict.length["new"] - dict.length["old"]);
+	    dict.magnitude = magnitude;
+	    updateAnonymous(dict);
+	    updateGlobe(dict);
 	};
+
 	//check if user is registered and human
+	
 	
     };
 
-
+    
     //**********************************REGISTERED HUMAN AND BOTS COMPONENT*****************************//
     //define a function here that is sufficiently abstract it can be reused for both the Registered human
     //and registered bots components
 
     
     //***********************************ANONYMOUS EDITS COMPONENT*************************************//
+    function updateAnonymous(dict) {
+	var bytes = dict.magnitude;
+	
+	//if the magnitude of the edit is zero,
+	//randomly classify it as positive or negative
+	if (bytes == 0) {
+	   Math.random() < 0.5 ? bytes++ : bytes--
+	}
+
+	bytes < 0 ? negativeBytesAnon += bytes : positiveBytesAnon += bytes;
+
+	var sign = bytes < 0 ? "N" : "P";
+	sign === "N" ? negativeEditsAnon++ : positiveEditsAnon++;
+
+	var totalEditsAnon = positiveEditsAnon + negativeEditsAnon;
+	document.getElementById('anonTotalEdits').innerHTML = totalEditsAnon;
+	
+	document.getElementById('negativeCount').innerHTML =
+		    (Math.round((negativeEditsAnon / totalEditsAnon) * 100) + "%");
+	document.getElementById('positiveCount').innerHTML =
+	    (Math.round((positiveEditsAnon / totalEditsAnon) * 100) + "%");
+	if (negativeBytesAnon < 0) {
+	    document.getElementById('negativeBytes').innerHTML =
+		(Math.abs(Math.round((negativeBytesAnon / negativeEditsAnon))) + " bytes");
+	}
+	if (positiveBytesAnon > 0) {
+	    document.getElementById('positiveBytes').innerHTML =
+		(Math.round((positiveBytesAnon / positiveEditsAnon)) + " bytes");
+	}
+    }
+    
+    //***********************************GLOBE COMPONENT*************************************//
+    //updateGlobe
+    function updateGlobe(dict) {
+	var user = dict.user;
+	var url = "http://freegeoip.net/json/" + user;
+	//convert ip address to geolocation (lat, lon coordinates)
+	//note while this is ok for development, there is a limit of 15000 requests
+	//per hour -> will need to deploy own instance of freegeoip web server to heroku
+	//for production
+	//see https://github.com/fiorix/freegeoip on how to do this
+	//if queue is running low,
+	//make a request for lat lon co-ordinates and add datum to queue
+	if (queue.length < 5) {
+	    getJSON(url, function(err,data) {
+		lat = data.latitude;
+		lon = data.longitude;
+		dict.latLong = [lon,lat];
+		dict.magnitude = (dict.length["new"] - dict.length["old"]);
+		queue.push(dict);
+		console.log("queue length is " + queue.length);
+	    });
+	}
+    }
     
     d3.json("world-110m.json", function(world) {
 	var caption = d3.select(".caption");
@@ -110,11 +155,6 @@ function draw() {
 		    };
 		});
 
-	var totalEdits = 0;
-	var positiveEdits = 0;
-	var negativeEdits = 0;
-	var positiveBytes = 0
-	var negativeBytes = 0
 
 	//every 5 seconds check queue array to see if you have received an edit,
 	//if you have, remove it from queue array, add its coordinates to map
@@ -130,31 +170,9 @@ function draw() {
 		}
 
 		var bytes = edit.magnitude;
-		bytes < 0 ? negativeBytes += bytes : positiveBytes += bytes;
 		
 		var sign = edit.magnitude < 0 ? "N" : "P";
-		totalEdits++;
-		sign === "N" ? negativeEdits++ : positiveEdits++;
-		console.log("total edits " + totalEdits);
-
-		window.setTimeout( function() {
-		    document.getElementById('negativeCount').innerHTML =
-			(Math.round((negativeEdits / totalEdits) * 100) + "%");
-
-		    document.getElementById('positiveCount').innerHTML =
-			(Math.round((positiveEdits / totalEdits) * 100) + "%");
-
-		    if (negativeBytes < 0) {
-			document.getElementById('negativeBytes').innerHTML =
-			    (Math.abs(Math.round((negativeBytes / negativeEdits))) + " bytes");
-		    }
-
-		    if (positiveBytes > 0) {
-			document.getElementById('positiveBytes').innerHTML =
-			    (Math.round((positiveBytes / positiveEdits)) + " bytes");
-		    }
-		}, 2000);
-
+		
 		d3.transition()
 		    .duration(2500)
 		    .each("start", function() {
