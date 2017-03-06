@@ -2,7 +2,6 @@ function draw() {
 
     //STATE
     var queue = [];   
-    var totalEditsAnon = 0;
     var positiveEditsAnon = 0;
     var negativeEditsAnon = 0;
     var positiveBytesAnon = 0
