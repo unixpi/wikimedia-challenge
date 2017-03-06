@@ -48,7 +48,6 @@ function draw() {
 	console.error('--- Encountered error', event);
     };
 
-
     eventSource.onmessage = function(event) {
 	// event.data will be a JSON string containing the message event.
 	var dict = JSON.parse(event.data);
@@ -61,19 +60,12 @@ function draw() {
 	    updateAnonymous(dict);
 	    updateGlobe(dict);
 	};
-
 	//check if user is registered and human
-	
-	
+		
     };
-
     
-    //**********************************REGISTERED HUMAN AND BOTS COMPONENT*****************************//
-    //define a function here that is sufficiently abstract it can be reused for both the Registered human
-    //and registered bots components
-
-    
-    //***********************************ANONYMOUS EDITS COMPONENT*************************************//
+    //***********************************STATS COMPONENT*************************************//
+    //update stats
     function updateAnonymous(dict) {
 	var bytes = dict.magnitude;
 	
@@ -155,10 +147,7 @@ function draw() {
 		    };
 		});
 
-
-	//every 5 seconds check queue array to see if you have received an edit,
-	//if you have, remove it from queue array, add its coordinates to map
-	window.setInterval(function() {
+	function updateMap() {
 	    var edit = queue.shift();
 	    if (edit) {
 		console.log(edit.magnitude);
@@ -223,7 +212,12 @@ function draw() {
 			    } 
 		    });
 	    }
-	}, 5000);
+	    console.log("map updating");
+	}
+	//every 5 seconds check queue array to see if you have received an edit,
+	//if you have, remove it from queue array, add its coordinates to map
+//	window.setTimeout(updateMap, 3000);
+	window.setInterval(updateMap, 5000);
     });
 
 
@@ -252,6 +246,5 @@ function draw() {
 	}
 	return false;
     }
-
 }
 
