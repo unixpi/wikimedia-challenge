@@ -146,8 +146,8 @@ function draw() {
 		 (botState.posEdits + botState.negEdits + humanState.posEdits + humanState.negEdits
 		 +anonState.posEdits + anonState.negEdits)}];
     }, 500);
-    
-    window.setTimeout(barchart,1000);
+
+    barchart();
     
     function barchart() {
 
@@ -197,8 +197,6 @@ function draw() {
 	    .attr("y", 0)
 	    .attr("x", -55)
 	    .style("text-anchor", "start");
-
-
 
 	var gx = svg.append("g")
 	    .attr("class", "x axis")

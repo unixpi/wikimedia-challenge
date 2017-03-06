@@ -17,12 +17,16 @@ body {
 //    color: rgb(120, 81, 169);
 }
 
+.barcharts-container {
+}
+
 .bar {
     fill: lightsteelblue;
 }
 
 .axis {
     font-size: 13px;
+    fill: grey;
 }
 
 .axis path,
