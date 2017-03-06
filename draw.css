@@ -36,7 +36,6 @@ canvas {
 #stats-container {
     width: 350px;
     margin-left: 2rem;
-    height: 450px;
 }
 
 .Positive {
@@ -72,11 +71,25 @@ canvas {
 }
 
 .counter {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.2rem;
+    
 }
 
 .bytesCounter {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.2rem;
+}
+
+.totalNumber {
+    padding: 5px;
+    background: steelblue;
+    border-radius: 3px;
+    color: white;
+    width: 273.5px;
+    margin-bottom: 0.2rem;
+}
+
+#anonTotalEdits {
+    float: right;
 }
 
 #negativeCount {

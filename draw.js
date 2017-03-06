@@ -2,6 +2,7 @@ function draw() {
 
     //STATE
     var queue = [];
+    var anonEditsCounter = 0;
     
 
     //SETUP    
@@ -48,6 +49,8 @@ function draw() {
 
 	//check if user is anonymous and has edited a page
 	if (isIPaddress(user) && dict.type === "edit") {
+	    anonEditsCounter++;
+	    document.getElementById('anonTotalEdits').innerHTML = anonEditsCounter;
 	    var url = "http://freegeoip.net/json/" + user;
 
 	    //convert ip address to geolocation (lat, lon coordinates)
