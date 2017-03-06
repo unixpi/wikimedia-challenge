@@ -1,13 +1,18 @@
 function draw() {
-
+    // TODO
+    // add state for registered human wikipedia edits
+    // add logic to check for registered human in eventSource.onmessage
+    // define necessary static components in html + css
+    // abstract out updateanonymous function to handle this component update too
+    // Repeat for bot wikipedia edit component
+    
     //STATE
     var queue = [];   
     var positiveEditsAnon = 0;
     var negativeEditsAnon = 0;
     var positiveBytesAnon = 0
     var negativeBytesAnon = 0
-
-
+    
     //END OF STATE
 
     //SETUP    
@@ -218,7 +223,6 @@ function draw() {
 //	window.setTimeout(updateMap, 3000);
 	window.setInterval(updateMap, 5000);
     });
-
 
     //HELPER FUNCTIONS
     function getJSON(url, callback) {
