@@ -6,6 +6,17 @@ body {
     font-size: 14px;
 }
 
+#main-main-title {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-weight: 600;
+    color: grey;
+//    color: rgb(120, 81, 169);
+}
+
 canvas {
     background: white;
 }
@@ -126,9 +137,11 @@ canvas {
 }
 
 .main-title {
-    font-size: 1rem;
+    font-size: 0.9rem;
     margin-top: 0rem;
     margin-bottom: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
     padding: 6px;
     text-align: center;
     width: 272px;
