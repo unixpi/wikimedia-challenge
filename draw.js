@@ -10,13 +10,17 @@ function draw() {
 		     posBytes: 0,
 		     negBytes: 0
 		    };
-
     var humanState = {posEdits: 0,
 		      negEdits: 0,
 		      posBytes: 0,
 		      negBytes: 0
 		     };
-    
+    var botState = {posEdits: 0,
+		      negEdits: 0,
+		      posBytes: 0,
+		      negBytes: 0
+		     };
+
     //END OF STATE
 
     //SETUP    
@@ -64,7 +68,7 @@ function draw() {
 
 	
 	//check if user is anonymous and has edited a page
-	if (isIPaddress(user) && dict.type === "edit") {
+	if (dict.type === "edit" && isIPaddress(user)) {
 	    magnitude = (dict.length["new"] - dict.length["old"]);
 	    dict.magnitude = magnitude;
 	    updateStats(dict,anonState,'Anon');
@@ -72,10 +76,17 @@ function draw() {
 	};
 
 	//check if user is registered and human and has edited a page
-	if (!isIPaddress(user) && dict.type === "edit" && !dict.bot) {
+	if (dict.type === "edit" && !dict.bot && !isIPaddress(user)) {
 	    magnitude = (dict.length["new"] - dict.length["old"]);
 	    dict.magnitude = magnitude;
 	    updateStats(dict,humanState,'Human');
+	}
+
+	//check if user is a bot and has edited a page
+	if (dict.bot && dict.type === "edit") {
+	    magnitude = (dict.length["new"] - dict.length["old"]);
+	    dict.magnitude = magnitude;
+	    updateStats(dict,botState,'Bot');
 	}
 		
     };

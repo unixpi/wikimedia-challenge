@@ -36,8 +36,10 @@ canvas {
 .figure { float: right}
 
 .stats-container {
-    width: 350px;
+    display: inline-block;
     margin-left: 2rem;
+    border-radius: 3px;
+    margin-bottom: 1rem;
 }
 
 .Positive {
@@ -83,10 +85,11 @@ canvas {
 
 .totalNumber {
     padding: 5px;
-    background: steelblue;
+    background: white;
     border-radius: 3px;
-    color: white;
-    width: 273.5px;
+    border: lightgrey solid 1px;
+    color: grey;
+    width: 272px;
     margin-bottom: 0.2rem;
 }
 
@@ -129,9 +132,9 @@ canvas {
     padding: 6px;
     text-align: center;
     width: 272px;
-    background: rgb(102, 153, 204);
+    background: white;
     border-radius: 3px;
-    color: white;
+    color: grey;
     font-weight: 400;
 }
 
