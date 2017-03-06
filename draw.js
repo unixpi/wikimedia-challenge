@@ -61,6 +61,7 @@ function draw() {
 	var dict = JSON.parse(event.data);
 	var user = dict.user;
 	var magnitude;
+
 	
 	//check if user is anonymous and has edited a page
 	if (isIPaddress(user) && dict.type === "edit") {
@@ -69,10 +70,12 @@ function draw() {
 	    updateStats(dict,anonState,'Anon');
 	    updateGlobe(dict);
 	};
+
 	//check if user is registered and human and has edited a page
-	if (!isIPaddress(user) && dict.type === "edit" && dict.bot === "false") {
+	if (!isIPaddress(user) && dict.type === "edit" && !dict.bot) {
 	    magnitude = (dict.length["new"] - dict.length["old"]);
-	    updateStats(dict,humanState);
+	    dict.magnitude = magnitude;
+	    updateStats(dict,humanState,'Human');
 	}
 		
     };

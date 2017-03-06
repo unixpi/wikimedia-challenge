@@ -12,12 +12,12 @@
   <body>
     <div class="container">
       <div class="anonymous-edits-container">
-	<div class="main-title">Anonymous Wikipedia Edits</div>
 	<div id="canvas-container">
 	  <div class="caption">
 	  </div>
 	</div>
-	<div id="stats-container">
+	<div class="stats-container">
+	  <div class="main-title">Anonymous Wikipedia Edits</div>
 	  <div class="totalNumber">Edits so far: <span id="totalEditsAnon">0</span></div>
 	  <div class="countersWrapper">
 	    <div class="Positive counter">Additions: <span id="positiveCountAnon">0%</span></div>
@@ -30,6 +30,18 @@
 	</div>
       </div>
       <div class="registered-human-edits-container">
+	<div class="stats-container">
+	  <div class="main-title">Registered Human Wikipedia Edits</div>
+	  <div class="totalNumber">Edits so far: <span id="totalEditsHuman" class="figure">0</span></div>
+	  <div class="countersWrapper">
+	    <div class="Positive counter">Additions: <span id="positiveCountHuman" class="figure" >0%</span></div>
+	    <div class="Negative counter">Subtractions: <span id="negativeCountHuman" class="figure">0%</span></div>
+	  </div>
+	  <div class="bytesWrapper">
+	    <div class="averagePos bytesCounter">Average Size: <span id="positiveBytesHuman" class="figure">0 bytes</span></div>
+	    <div class="averageNeg bytesCounter">Average Size: <span id="negativeBytesHuman" class="figure">0 bytes</span></div>
+	  </div>
+	</div>
       </div>
     </div>
     <script>

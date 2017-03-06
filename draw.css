@@ -33,7 +33,9 @@ canvas {
     font-weight: 600;
 }
 
-#stats-container {
+.figure { float: right}
+
+.stats-container {
     width: 350px;
     margin-left: 2rem;
 }
@@ -121,12 +123,12 @@ canvas {
 }
 
 .main-title {
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin-top: 0rem;
-    margin-left: 1.2rem;
+    margin-bottom: 0.25rem;
     padding: 6px;
     text-align: center;
-    width: 295px;
+    width: 272px;
     background: rgb(102, 153, 204);
     border-radius: 3px;
     color: white;
