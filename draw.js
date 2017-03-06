@@ -46,6 +46,7 @@ function draw() {
 	var dict = JSON.parse(event.data);
 	var user = dict.user;
 
+	//check if user is anonymous and has edited a page
 	if (isIPaddress(user) && dict.type === "edit") {
 	    var url = "http://freegeoip.net/json/" + user;
 
@@ -57,19 +58,27 @@ function draw() {
 
 	    //if queue is running low,
 	    //make a request for lat lon co-ordinates and add datum to queue
-		if (queue.length < 5) {
-		    getJSON(url, function(err,data) {
-			lat = data.latitude;
-			lon = data.longitude;
-			dict.latLong = [lon,lat];
-			dict.magnitude = (dict.length["new"] - dict.length["old"]);
-			queue.push(dict);
-			console.log("queue length is " + queue.length);
-		    });
-		}
-	    };
+	    if (queue.length < 5) {
+		getJSON(url, function(err,data) {
+		    lat = data.latitude;
+		    lon = data.longitude;
+		    dict.latLong = [lon,lat];
+		    dict.magnitude = (dict.length["new"] - dict.length["old"]);
+		    queue.push(dict);
+		    console.log("queue length is " + queue.length);
+		});
+	    }
 	};
+	//check if user is registered and human
+	
+    };
 
+
+    //**********************************REGISTERED HUMAN AND BOTS COMPONENT*****************************//
+    //define a function here that is sufficiently abstract it can be reused for both the Registered human
+    //and registered bots components
+
+    
     //***********************************ANONYMOUS EDITS COMPONENT*************************************//
     
     d3.json("world-110m.json", function(world) {
