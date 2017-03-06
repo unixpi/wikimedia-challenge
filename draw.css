@@ -12,7 +12,7 @@ body {
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.03em;
-    font-weight: 600;
+    font-weight: 200;
     color: grey;
 //    color: rgb(120, 81, 169);
 }
@@ -137,18 +137,18 @@ canvas {
 }
 
 .main-title {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     margin-top: 0rem;
     margin-bottom: 0.25rem;
     text-transform: uppercase;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.04em;
     padding: 6px;
     text-align: center;
     width: 272px;
     background: white;
     border-radius: 3px;
     color: grey;
-    font-weight: 400;
+    font-weight: 200;
 }
 
 
