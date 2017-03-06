@@ -29,6 +29,11 @@ body {
     fill: grey;
 }
 
+.barcharts-title {
+    margin-top: 1rem;
+    color: grey;
+}
+
 .axis path,
 .axis line {
     fill: none;

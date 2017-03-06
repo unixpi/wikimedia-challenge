@@ -158,7 +158,7 @@ function draw() {
 	    left: 90
 	};
 
-	var width = 320 - margin.left - margin.right,
+	var width = 325 - margin.left - margin.right,
 	    height = 120 - margin.top - margin.bottom;
 
 	var svg = d3.select(".barcharts-container").append("svg")
@@ -180,6 +180,9 @@ function draw() {
 		return d.name;
 	    }));
 
+//	var formatPercent = d3.format("%");
+
+	    
 	var yAxis = d3.svg.axis()
 	    .scale(y)
 	    .tickSize(0)
@@ -188,6 +191,8 @@ function draw() {
 	var xAxis = d3.svg.axis()
 	    .scale(x)
 	    .tickSize(0)
+//	    .tickFormat(formatPercent)
+	    .ticks(5)
 	    .orient("bottom");
 
 	var gy = svg.append("g")
