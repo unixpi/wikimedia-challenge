@@ -1,7 +1,12 @@
 function draw() {
+
+    //STATE
+    var queue = [];
+    
+
+    //SETUP    
     var width = 350;
     var height = 400;
-    var caption = d3.select(".caption"); 
     var projection = d3.geo.orthographic()
 	.translate([width / 2, height / 2])
 	.scale(width / 2 - 10)
@@ -19,15 +24,57 @@ function draw() {
      .context(c);
 
     canvas.append("path")
-     .datum({type: "Sphere"})
-     .attr("class", "water")
-     .attr("d", path);
+	.datum({type: "Sphere"})
+	.attr("class", "water")
+	.attr("d", path);
 
-    var title = d3.select(".title");
+    var url = 'https://stream.wikimedia.org/v2/stream/recentchange';
 
-    var countryFill = "lightsteelblue";
+    console.log('Connecting to EventStreams at ' + url);
+    var eventSource = new EventSource(url);
 
+    eventSource.onopen = function(event) {
+	console.log('--- Opened connection.');
+    };
+
+    eventSource.onerror = function(event) {
+	console.error('--- Encountered error', event);
+    };
+
+    eventSource.onmessage = function(event) {
+	// event.data will be a JSON string containing the message event.
+	var dict = JSON.parse(event.data);
+	var user = dict.user;
+
+	if (isIPaddress(user) && dict.type === "edit") {
+	    var url = "http://freegeoip.net/json/" + user;
+
+	    //convert ip address to geolocation (lat, lon coordinates)
+	    //note while this is ok for development, there is a limit of 15000 requests
+	    //per hour -> will need to deploy own instance of freegeoip web server to heroku
+	    //for production
+	    //see https://github.com/fiorix/freegeoip on how to do this
+
+	    //if queue is running low,
+	    //make a request for lat lon co-ordinates and add datum to queue
+		if (queue.length < 5) {
+		    getJSON(url, function(err,data) {
+			lat = data.latitude;
+			lon = data.longitude;
+			dict.latLong = [lon,lat];
+			dict.magnitude = (dict.length["new"] - dict.length["old"]);
+			queue.push(dict);
+			console.log("queue length is " + queue.length);
+		    });
+		}
+	    };
+	};
+
+    //***********************************ANONYMOUS EDITS COMPONENT*************************************//
+    
     d3.json("world-110m.json", function(world) {
+	var caption = d3.select(".caption");
+	var countryFill = "lightsteelblue";
 	var globe = {type: "Sphere"},
 	    land = topojson.feature(world, world.objects.land),
 	    countries = topojson.feature(world, world.objects.countries).features,
@@ -51,49 +98,6 @@ function draw() {
 		    };
 		});
 
-	var url = 'https://stream.wikimedia.org/v2/stream/recentchange';
-	var edits = [];
-	var queue = [];
-
-	console.log('Connecting to EventStreams at ' + url);
-	var eventSource = new EventSource(url);
-
-	eventSource.onopen = function(event) {
-	    console.log('--- Opened connection.');
-	};
-
-	eventSource.onerror = function(event) {
-	    console.error('--- Encountered error', event);
-	};
-
-	eventSource.onmessage = function(event) {
-	    // event.data will be a JSON string containing the message event.
-	    var dict = JSON.parse(event.data);
-	    var user = dict.user;
-	    
-	    if (isIPaddress(user) && dict.type === "edit") {
-
-		var url = "http://freegeoip.net/json/" + user;
-		//convert ip address to geolocation (lat, lon coordinates)
-		//note while this is ok for development, there is a limit of 15000 requests
-		//per hour -> will need to deploy own instance of freegeoip web server to heroku
-		//for production
-		//see https://github.com/fiorix/freegeoip on how to do this
-
-		//if queue is running low,
-		//make a request for lat lon co-ordinates and add datum to queue
-		if (queue.length < 5) {
-		    getJSON(url, function(err,data) {
-			lat = data.latitude;
-			lon = data.longitude;
-			dict.latLong = [lon,lat];
-			dict.magnitude = (dict.length["new"] - dict.length["old"]);
-			queue.push(dict);
-			console.log("queue length is " + queue.length);
-		    });
-		}
-	    };
-	};
 	var totalEdits = 0;
 	var positiveEdits = 0;
 	var negativeEdits = 0;
@@ -106,7 +110,6 @@ function draw() {
 	    var edit = queue.shift();
 	    if (edit) {
 		console.log(edit.magnitude);
-		edits.push(edit.latLong);
 		
 		//if the magnitude of the edit is zero,
 		//randomly classify it as positive or negative
@@ -193,6 +196,8 @@ function draw() {
 	}, 5000);
     });
 
+
+    //HELPER FUNCTIONS
     function getJSON(url, callback) {
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', url, true);
