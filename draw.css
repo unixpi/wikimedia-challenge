@@ -88,23 +88,23 @@ canvas {
     margin-bottom: 0.2rem;
 }
 
-#anonTotalEdits {
+#totalEditsAnon {
     float: right;
 }
 
-#negativeCount {
+#negativeCountAnon {
     float: right;
 }
 
-#positiveCount {
+#positiveCountAnon {
     float: right;
 }
 
-#negativeBytes {
+#negativeBytesAnon {
     float: right;
 }
 
-#positiveBytes {
+#positiveBytesAnon {
     float: right;
 }
 

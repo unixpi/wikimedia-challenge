@@ -1,17 +1,21 @@
 function draw() {
     // TODO
-    // add state for registered human wikipedia edits
-    // add logic to check for registered human in eventSource.onmessage
     // define necessary static components in html + css
-    // abstract out updateanonymous function to handle this component update too
     // Repeat for bot wikipedia edit component
     
     //STATE
-    var queue = [];   
-    var positiveEditsAnon = 0;
-    var negativeEditsAnon = 0;
-    var positiveBytesAnon = 0
-    var negativeBytesAnon = 0
+    var queue = [];
+    var anonState = {posEdits: 0,
+		     negEdits: 0,
+		     posBytes: 0,
+		     negBytes: 0
+		    };
+
+    var humanState = {posEdits: 0,
+		      negEdits: 0,
+		      posBytes: 0,
+		      negBytes: 0
+		     };
     
     //END OF STATE
 
@@ -56,21 +60,26 @@ function draw() {
 	// event.data will be a JSON string containing the message event.
 	var dict = JSON.parse(event.data);
 	var user = dict.user;
+	var magnitude;
 	
 	//check if user is anonymous and has edited a page
 	if (isIPaddress(user) && dict.type === "edit") {
-	    var magnitude = (dict.length["new"] - dict.length["old"]);
+	    magnitude = (dict.length["new"] - dict.length["old"]);
 	    dict.magnitude = magnitude;
-	    updateAnonymous(dict);
+	    updateStats(dict,anonState,'Anon');
 	    updateGlobe(dict);
 	};
-	//check if user is registered and human
+	//check if user is registered and human and has edited a page
+	if (!isIPaddress(user) && dict.type === "edit" && dict.bot === "false") {
+	    magnitude = (dict.length["new"] - dict.length["old"]);
+	    updateStats(dict,humanState);
+	}
 		
     };
     
     //***********************************STATS COMPONENT*************************************//
     //update stats
-    function updateAnonymous(dict) {
+    function updateStats(dict,state,suffix) {
 	var bytes = dict.magnitude;
 	
 	//if the magnitude of the edit is zero,
@@ -79,25 +88,25 @@ function draw() {
 	   Math.random() < 0.5 ? bytes++ : bytes--
 	}
 
-	bytes < 0 ? negativeBytesAnon += bytes : positiveBytesAnon += bytes;
+	bytes < 0 ? state.negBytes += bytes : state.posBytes += bytes;
 
 	var sign = bytes < 0 ? "N" : "P";
-	sign === "N" ? negativeEditsAnon++ : positiveEditsAnon++;
+	sign === "N" ? state.negEdits++ : state.posEdits++;
 
-	var totalEditsAnon = positiveEditsAnon + negativeEditsAnon;
-	document.getElementById('anonTotalEdits').innerHTML = totalEditsAnon;
+	var totalEdits = state.posEdits + state.negEdits;
+	document.getElementById('totalEdits' + suffix).innerHTML = totalEdits;
 	
-	document.getElementById('negativeCount').innerHTML =
-		    (Math.round((negativeEditsAnon / totalEditsAnon) * 100) + "%");
-	document.getElementById('positiveCount').innerHTML =
-	    (Math.round((positiveEditsAnon / totalEditsAnon) * 100) + "%");
-	if (negativeBytesAnon < 0) {
-	    document.getElementById('negativeBytes').innerHTML =
-		(Math.abs(Math.round((negativeBytesAnon / negativeEditsAnon))) + " bytes");
+	document.getElementById('negativeCount' + suffix).innerHTML =
+		    (Math.round((state.negEdits / totalEdits) * 100) + "%");
+	document.getElementById('positiveCount' + suffix).innerHTML =
+	    (Math.round((state.posEdits / totalEdits) * 100) + "%");
+	if (state.negBytes < 0) {
+	    document.getElementById('negativeBytes' + suffix).innerHTML =
+		(Math.abs(Math.round((state.negBytes / state.negEdits))) + " bytes");
 	}
-	if (positiveBytesAnon > 0) {
-	    document.getElementById('positiveBytes').innerHTML =
-		(Math.round((positiveBytesAnon / positiveEditsAnon)) + " bytes");
+	if (state.posBytes > 0) {
+	    document.getElementById('positiveBytes' + suffix).innerHTML =
+		(Math.round((state.posBytes / state.posEdits)) + " bytes");
 	}
     }
     
