@@ -20,15 +20,12 @@ canvas {
     padding: 0px;
     height: 400px;
     width: 350px;
-    display: inline-block;
-    vertical-align: top;
     margin: 0 auto;
-    margin-top: -0.6rem;
 }
 
 .caption {
     position: absolute;
-    top: 220px;
+    top: 260px;
     margin-left: 20px;
     width: 320px;
     text-align: center;
@@ -38,10 +35,8 @@ canvas {
 
 #stats-container {
     width: 350px;
-    margin-left: 1rem;
+    margin-left: 2rem;
     height: 450px;
-    display: inline-block;
-    vertical-align: top;
 }
 
 .Positive {
@@ -101,24 +96,21 @@ canvas {
 }
 
 .countersWrapper {
-    margin-left: 0.65rem;
-    margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     width: 120px;
     display: inline-block;
 }
 
 .bytesWrapper {
-    margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     width: 180px;
     display: inline-block;
 }
 
 .main-title {
-    display: inline-block;
     font-size: 1.2rem;
     margin-top: 0rem;
+    margin-left: 1.2rem;
     padding: 6px;
     text-align: center;
     width: 295px;
