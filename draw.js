@@ -90,6 +90,7 @@ function draw() {
 	}
 		
     };
+
     
     //***********************************STATS COMPONENT*************************************//
     //update stats
@@ -123,7 +124,130 @@ function draw() {
 		(Math.round((state.posBytes / state.posEdits)) + " bytes");
 	}
     }
+
     
+    //********************************BARCHART COMPONENT************************************//
+
+    var data = [{"name": "Bots","value": (botState.posEdits + botState.negEdits) /
+		 (anonState.posEdits + anonState.negEdits + humanState.posEdits + humanState.negEdits)},
+		{"name": "Humans","value": (humanState.posEdits + humanState.negEdits) /
+		 (anonState.posEdits + anonState.negEdits + botState.posEdits + botState.negEdits)},
+		{"name": "Anon","value": (anonState.posEdits + anonState.negEdits) /
+		 (botState.posEdits + botState.negEdits + humanState.posEdits + humanState.negEdits)}];
+
+    window.setInterval(function() {
+	data = [{"name": "Bots","value": (botState.posEdits + botState.negEdits) /
+		 (anonState.posEdits + anonState.negEdits + humanState.posEdits + humanState.negEdits
+		 + botState.posEdits + botState.negEdits)},
+		{"name": "Humans","value": (humanState.posEdits + humanState.negEdits) /
+		 (anonState.posEdits + anonState.negEdits + botState.posEdits + botState.negEdits
+		 + humanState.posEdits + humanState.negEdits)},
+		{"name": "Anon","value": (anonState.posEdits + anonState.negEdits) /
+		 (botState.posEdits + botState.negEdits + humanState.posEdits + humanState.negEdits
+		 +anonState.posEdits + anonState.negEdits)}];
+    }, 500);
+    
+    window.setTimeout(barchart,1000);
+    
+    function barchart() {
+
+	var margin = {
+	    top: 15,
+	    right: 25,
+	    bottom: 15,
+	    left: 90
+	};
+
+	var width = 320 - margin.left - margin.right,
+	    height = 120 - margin.top - margin.bottom;
+
+	var svg = d3.select(".barcharts-container").append("svg")
+	    .attr("width", width + margin.left + margin.right)
+	    .attr("height", height + margin.top + margin.bottom)
+	    .append("g")
+	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	var x = d3.scale.linear()
+	    .range([0, width])
+	    .domain([0,100]);
+//	    .domain([0, d3.max(data, function (d) {
+//		return d.value;
+//	    })]);
+
+	var y = d3.scale.ordinal()
+	    .rangeRoundBands([height, 0], .5)
+	    .domain(data.map(function (d) {
+		return d.name;
+	    }));
+
+	var yAxis = d3.svg.axis()
+	    .scale(y)
+	    .tickSize(0)
+	    .orient("left");
+
+	var xAxis = d3.svg.axis()
+	    .scale(x)
+	    .tickSize(0)
+	    .orient("bottom");
+
+	var gy = svg.append("g")
+	    .attr("class", "y axis")
+	    .call(yAxis)
+	    .selectAll("text")
+	    .attr("y", 0)
+	    .attr("x", -55)
+	    .style("text-anchor", "start");
+
+
+
+	var gx = svg.append("g")
+	    .attr("class", "x axis")
+	    .attr("transform", "translate(0,-5)")
+	    .call(xAxis);
+
+	var bars = svg.selectAll(".bar")
+	    .data(data)
+	    .enter()
+	    .append("g");
+
+	bars.append("rect")
+	    .attr("class", "bar")
+	    .attr("y", function (d) {
+		return y(d.name);
+	    })
+	    .attr("height", y.rangeBand())
+	    .attr("x", 0)
+	    .attr("width", function (d) {
+		return x(d.value);
+	    });
+
+	bars.append("text")
+	    .attr("class", "label")
+	    .attr("y", function (d) {
+		return y(d.name) + y.rangeBand() / 2 + 4;
+	    })
+
+	//d3.select("input").on("change", change);
+
+//	var sortTimeout = window.setTimeout(function() {
+//	    d3.select("input").property("checked", true).each(change);
+	//	}, 1000);
+
+	window.setInterval(change, 600);
+	
+	function change() {
+
+	    var transition = svg.transition().duration(500);
+
+	    transition.selectAll(".bar")
+	    	.attr("width", function (d,i) {
+		    return x(data[i]["value"] * 100);
+		});
+
+
+	}
+
+    }    
     //***********************************GLOBE COMPONENT*************************************//
     //updateGlobe
     function updateGlobe(dict) {

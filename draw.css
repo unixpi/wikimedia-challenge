@@ -17,6 +17,24 @@ body {
 //    color: rgb(120, 81, 169);
 }
 
+.bar {
+    fill: lightsteelblue;
+}
+
+.axis {
+    font-size: 13px;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    display: none;
+}
+
+.label {
+    font-size: 13px;
+}
+
 canvas {
     background: white;
 }
