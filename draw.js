@@ -352,7 +352,7 @@ function draw() {
     //updateGlobe
     function updateGlobe(dict) {
 	var user = dict.user;
-	var url = "http://freegeoip.net/json/" + user;
+	var url = "https://freegeoip.net/json/" + user;
 	//convert ip address to geolocation (lat, lon coordinates)
 	//note while this is ok for development, there is a limit of 15000 requests
 	//per hour -> will need to deploy own instance of freegeoip web server to heroku
