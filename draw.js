@@ -53,11 +53,11 @@ function draw() {
 
 	//drawbarcharts
 	barchart(0);
-	barchart(1);
-	barchart(2);
+//	barchart(1);
+//	barchart(2);
 	barchart(3);
-	barchart(4);
-	barchart(5);
+//	barchart(4);
+//	barchart(5);
     };
 
     eventSource.onerror = function(event) {
@@ -218,7 +218,7 @@ function draw() {
 		      ]
 	d3.select(".barcharts-container")
 	    .append('div')
-	    .attr('class','stats-container')
+	    .attr('class','stats-container minimal-barchart')
 	    .append('div')
 	    .attr('class','barcharts-title')
 	    .html(titles[dataset]);
