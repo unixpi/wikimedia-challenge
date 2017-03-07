@@ -81,6 +81,11 @@ canvas {
     margin-bottom: 1rem;
 }
 
+#comparisons {
+    margin-top: 1rem;
+    margin-bottom: -1rem;
+}
+
 .Positive {
     background: rgba(0,0,200,0.5);
     padding: 5px;

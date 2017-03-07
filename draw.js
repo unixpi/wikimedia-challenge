@@ -57,7 +57,9 @@ function draw() {
 
 	//draw barcharts after short delay
 	window.setTimeout(function() { return barchart(0) }, 2500 );
-	window.setTimeout(function() { return barchart(1) }, 2500 );
+	window.setTimeout(function() { return barchart(1) }, 2600 );
+	window.setTimeout(function() { return barchart(2) }, 2700 );
+	
     };
 
     eventSource.onerror = function(event) {
@@ -146,6 +148,10 @@ function draw() {
 			{"name": "Humans","value": humanState.posEdits / (humanState.posEdits + humanState.negEdits)},
 			{"name": "Anon","value": anonState.posEdits / (anonState.posEdits + anonState.negEdits)}];
 
+    var negEditsData = [{"name": "Bots","value": botState.negEdits / (botState.posEdits + botState.negEdits)},
+			{"name": "Humans","value": humanState.negEdits / (humanState.posEdits + humanState.negEdits)},
+			{"name": "Anon","value": anonState.negEdits / (anonState.posEdits + anonState.negEdits)}];
+
     window.setInterval(function() {
 	totalEditsData = [{"name": "Bots","value": (botState.posEdits + botState.negEdits) /
 			   (anonState.posEdits + anonState.negEdits + humanState.posEdits + humanState.negEdits
@@ -161,11 +167,15 @@ function draw() {
 			{"name": "Humans","value": humanState.posEdits / (humanState.posEdits + humanState.negEdits)},
 			{"name": "Anon","value": anonState.posEdits / (anonState.posEdits + anonState.negEdits)}];
 
+	negEditsData = [{"name": "Bots","value": botState.negEdits / (botState.posEdits + botState.negEdits)},
+			{"name": "Humans","value": humanState.negEdits / (humanState.posEdits + humanState.negEdits)},
+			{"name": "Anon","value": anonState.negEdits / (anonState.posEdits + anonState.negEdits)}];
     }, 500);
 
     function barchart(dataset) {
 
-	var titles = ['Percentage of Total Edits Made', 'Percentage of Positive Edits','Percentage of Negative Edits']
+	var titles = ['Percentage of Total Edits Made', 'Percentage of Edits That Are Additive',
+		      'Percentage of Edits That Are Subtractive']
 	d3.select(".barcharts-container")
 	    .append('div')
 	    .attr('class','stats-container')
@@ -272,6 +282,9 @@ function draw() {
 		    break;
 		case 1 :
 		    return posEditsData;
+		    break;
+		case 2 :
+		    return negEditsData;
 		    break;
 		}
 	    }())
