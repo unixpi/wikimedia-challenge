@@ -49,13 +49,14 @@ function draw() {
 
     eventSource.onopen = function(event) {
 	console.log('--- Opened connection.');
-	//draw barcharts after short delay
-	window.setTimeout(function() { return barchart(0) }, 2500 );
-	window.setTimeout(function() { return barchart(1) }, 2600 );
-	window.setTimeout(function() { return barchart(2) }, 2700 );
-	window.setTimeout(function() { return barchart(3) }, 2800 );
-	window.setTimeout(function() { return barchart(4) }, 2900 );
-	window.setTimeout(function() { return barchart(5) }, 3000 );	
+
+	//drawbarcharts
+	barchart(0);
+	barchart(1);
+	barchart(2);
+	barchart(3);
+	barchart(4);
+	barchart(5);
     };
 
     eventSource.onerror = function(event) {
@@ -230,10 +231,10 @@ function draw() {
 	    top: 15,
 	    right: 25,
 	    bottom: 15,
-	    left: 90
+	    left: 94
 	};
 
-	var width = 325 - margin.left - margin.right,
+	var width = 320 - margin.left - margin.right,
 	    height = 120 - margin.top - margin.bottom;
 
 	var svg = d3.select(".barcharts-container").append("svg")

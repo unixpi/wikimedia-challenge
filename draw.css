@@ -13,8 +13,8 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.06em;
     font-weight: 400;
-    color: grey;
-//    color: rgb(120, 81, 169);
+    color: rgb(54,69,79) ;
+
 }
 
 .barcharts-container {
@@ -34,6 +34,7 @@ body {
 .barcharts-title {
     margin-top: 1rem;
     color: grey;
+    margin-left: 0.4rem;
     margin-bottom: -1rem;
 }
 
@@ -89,10 +90,12 @@ canvas {
 
 .Positive {
     padding: 5px;
-//    border-radius: 3px;
-    border: rgb(240,240,240) solid 1px;
     color: rgba(0,0,200,0.5);
     width: 110px;
+    border-top: rgb(240,240,240) solid 1px;
+    border-left: rgb(240,240,240) solid 1px;
+    border-right: rgb(240,240,240) solid 1px;
+
 }
 
 .Negative {
@@ -101,12 +104,14 @@ canvas {
     border: rgb(240,240,240) solid 1px;
     color: rgba(227, 38, 54,0.8);
     width: 110px;
+    border-bottom-left-radius: 4px;
 }
 
 .averagePos {
     padding: 5px;
-//    border-radius: 3px;
-    border: rgb(240,240,240) solid 1px;
+    border-top: rgb(240,240,240) solid 1px;
+    border-left: rgb(240,240,240) solid 1px;
+    border-right: rgb(240,240,240) solid 1px;
     color: rgba(0,0,200,0.5);
     width: 150px;
 }
@@ -117,6 +122,7 @@ canvas {
     border: rgb(240,240,240) solid 1px;
     color: rgba(227, 38, 54,0.8);
     width: 150px;
+    border-bottom-right-radius: 4px;
 }
 
 /*
@@ -165,8 +171,11 @@ canvas {
 .totalNumber {
     padding: 5px;
     background: white;
-//    border-radius: 3px;
-    border: rgb(240,240,240) solid 1px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-top: rgb(240,240,240) solid 1px;
+    border-left: rgb(240,240,240) solid 1px;
+    border-right: rgb(240,240,240) solid 1px;
     color: grey;
     width: 271px;
 //    margin-bottom: 0.2rem;
@@ -207,15 +216,12 @@ canvas {
 .main-title {
     font-size: 0.8rem;
     margin-top: 0rem;
-    margin-bottom: 0.25rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
     padding: 6px;
     text-align: center;
-    width: 272px;
+    width: 269px;
     background: white;
-    border-radius: 3px;
-    color: grey;
+    color: rgb(120,120,120);
+    text-transform: uppercase;
     font-weight: 400;
 }
 
