@@ -1,4 +1,5 @@
 function draw() {
+    //TODO : add about section, desktop version, backup heroku server
     //STATE
     var queue = [];
     var anonState = {posEdits: 0,

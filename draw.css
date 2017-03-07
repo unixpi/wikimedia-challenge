@@ -8,15 +8,25 @@ body {
 
 #main-main-title {
     text-align: center;
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     font-size: 0.9rem;
+    letter-spacing: 0.03em;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-weight: 400;
-    color: rgb(54,69,79) ;
-
+    color: rgb(54,69,79);
 }
 
+.purple {
+    color: rgba(0,0,200,0.5)
+}
+
+.red {
+    color: rgba(227, 38, 54,0.8);
+}
+
+a {
+    color: steelblue;
+}
 .barcharts-container {
 }
 
@@ -81,6 +91,13 @@ canvas {
     display: inline-block;
     margin-left: 2rem;
     margin-bottom: 1rem;
+}
+
+.about-text {
+    margin-left: 2.3rem;
+    margin-bottom: 1rem;
+    max-width: 280px;
+    color: grey;
 }
 
 #comparisons {
@@ -214,14 +231,13 @@ canvas {
 }
 
 .main-title {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     margin-top: 0rem;
     padding: 6px;
-    text-align: center;
+    text-align: left;
     width: 269px;
     background: white;
-    color: rgb(120,120,120);
-    text-transform: uppercase;
+    color: rgb(54,69,79);
     font-weight: 400;
 }
 

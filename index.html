@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
   <head>
-    <title>Wikipedia Edita</title>
+    <title>Wikipedia Edits</title>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0, user-scalable=yes" name="viewport">
     <script src="//d3js.org/d3.v3.min.js"></script>
@@ -61,6 +61,31 @@
       <div class="barcharts-container">
 	<div class="stats-container" id="comparisons">
 	  <div class="main-title">Comparisons</div>
+	</div>
+      </div>
+      <div class="about">
+	<div class="stats-container">
+	  <div class="main-title">About</div>
+	</div>
+	<div class="about-text">
+	  <div class="p1">
+	    The globe is used to display a real-time random sample of anonymous edits (one every 5 seconds).
+	    <p><span class="purple">Purple circles</span> represent <span class="purple">net additions</span>, <span class="red">red circles</span> represent <span class="red">net subtractions.</span></p>
+  <p>	  The bigger the circle, the larger the edit (circle radius is proportionate to the log of the size of the edit in bytes).</p>
+	    Why are only anonymous user edits displayed on the globe? Anonymous users are identified by their
+	    I.P address, which can be converted to a geolocation. Registered Users and Bots are identified
+	    by their usernames, which have no geolocation information attached.
+	  </div>
+	  <div class="p2">
+	    <p>
+	      Made by <a href="https://sachaysl.github.io">Sacha Saint-Leger</a>
+	    </p>
+	  </div>
+	  <div class="p3">
+	    <p>
+	      Source can be found <a href="https://github.com/sachaysl/wikimedia-challenge">here</a>
+	    </p>
+	  </div>
 	</div>
       </div>
     </div>
