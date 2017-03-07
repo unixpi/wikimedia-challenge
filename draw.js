@@ -54,6 +54,10 @@ function draw() {
 
     eventSource.onopen = function(event) {
 	console.log('--- Opened connection.');
+
+	//draw barcharts after short delay
+	window.setTimeout(function() { return barchart(0) }, 2500 );
+	window.setTimeout(function() { return barchart(1) }, 2500 );
     };
 
     eventSource.onerror = function(event) {
@@ -88,6 +92,7 @@ function draw() {
 	    dict.magnitude = magnitude;
 	    updateStats(dict,botState,'Bot');
 	}
+	
 		
     };
 
@@ -127,30 +132,52 @@ function draw() {
 
     
     //********************************BARCHART COMPONENT************************************//
+    var totalEditsData = [{"name": "Bots","value": (botState.posEdits + botState.negEdits) /
+			   (anonState.posEdits + anonState.negEdits + humanState.posEdits + humanState.negEdits
+			    + botState.posEdits + botState.negEdits)},
+			  {"name": "Humans","value": (humanState.posEdits + humanState.negEdits) /
+			   (anonState.posEdits + anonState.negEdits + botState.posEdits + botState.negEdits
+			    + humanState.posEdits + humanState.negEdits)},
+			  {"name": "Anon","value": (anonState.posEdits + anonState.negEdits) /
+			   (botState.posEdits + botState.negEdits + humanState.posEdits + humanState.negEdits
+			    +anonState.posEdits + anonState.negEdits)}];
 
-    var data = [{"name": "Bots","value": (botState.posEdits + botState.negEdits) /
-		 (anonState.posEdits + anonState.negEdits + humanState.posEdits + humanState.negEdits)},
-		{"name": "Humans","value": (humanState.posEdits + humanState.negEdits) /
-		 (anonState.posEdits + anonState.negEdits + botState.posEdits + botState.negEdits)},
-		{"name": "Anon","value": (anonState.posEdits + anonState.negEdits) /
-		 (botState.posEdits + botState.negEdits + humanState.posEdits + humanState.negEdits)}];
+    var posEditsData = [{"name": "Bots","value": botState.posEdits / (botState.posEdits + botState.negEdits)},
+			{"name": "Humans","value": humanState.posEdits / (humanState.posEdits + humanState.negEdits)},
+			{"name": "Anon","value": anonState.posEdits / (anonState.posEdits + anonState.negEdits)}];
 
     window.setInterval(function() {
-	data = [{"name": "Bots","value": (botState.posEdits + botState.negEdits) /
-		 (anonState.posEdits + anonState.negEdits + humanState.posEdits + humanState.negEdits
-		 + botState.posEdits + botState.negEdits)},
-		{"name": "Humans","value": (humanState.posEdits + humanState.negEdits) /
-		 (anonState.posEdits + anonState.negEdits + botState.posEdits + botState.negEdits
-		 + humanState.posEdits + humanState.negEdits)},
-		{"name": "Anon","value": (anonState.posEdits + anonState.negEdits) /
-		 (botState.posEdits + botState.negEdits + humanState.posEdits + humanState.negEdits
-		 +anonState.posEdits + anonState.negEdits)}];
+	totalEditsData = [{"name": "Bots","value": (botState.posEdits + botState.negEdits) /
+			   (anonState.posEdits + anonState.negEdits + humanState.posEdits + humanState.negEdits
+			    + botState.posEdits + botState.negEdits)},
+			  {"name": "Humans","value": (humanState.posEdits + humanState.negEdits) /
+			   (anonState.posEdits + anonState.negEdits + botState.posEdits + botState.negEdits
+			    + humanState.posEdits + humanState.negEdits)},
+			  {"name": "Anon","value": (anonState.posEdits + anonState.negEdits) /
+			   (botState.posEdits + botState.negEdits + humanState.posEdits + humanState.negEdits
+			    +anonState.posEdits + anonState.negEdits)}];
+
+	posEditsData = [{"name": "Bots","value": botState.posEdits / (botState.posEdits + botState.negEdits)},
+			{"name": "Humans","value": humanState.posEdits / (humanState.posEdits + humanState.negEdits)},
+			{"name": "Anon","value": anonState.posEdits / (anonState.posEdits + anonState.negEdits)}];
+
     }, 500);
 
-    barchart();
-    
-    function barchart() {
+    function barchart(dataset) {
 
+	var titles = ['Percentage of Total Edits Made', 'Percentage of Positive Edits','Percentage of Negative Edits']
+	d3.select(".barcharts-container")
+	    .append('div')
+	    .attr('class','stats-container')
+	    .append('div')
+	    .attr('class','barcharts-title')
+	    .html(titles[dataset]);
+	
+	//placeholder data
+	var data = [{"name": "Bots","value": 0},
+		    {"name": "Humans","value":0 },
+		    {"name": "Anon","value": 0 }];
+		   
 	var margin = {
 	    top: 15,
 	    right: 25,
@@ -166,7 +193,7 @@ function draw() {
 	    .attr("height", height + margin.top + margin.bottom)
 	    .append("g")
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
+	
 	var x = d3.scale.linear()
 	    .range([0, width])
 	    .domain([0,100]);
@@ -182,7 +209,6 @@ function draw() {
 
 //	var formatPercent = d3.format("%");
 
-	    
 	var yAxis = d3.svg.axis()
 	    .scale(y)
 	    .tickSize(0)
@@ -239,7 +265,17 @@ function draw() {
 	window.setInterval(change, 600);
 	
 	function change() {
-
+	    var data = (function() {
+		switch(dataset) {
+		case 0 :
+		    return totalEditsData;
+		    break;
+		case 1 :
+		    return posEditsData;
+		    break;
+		}
+	    }())
+	
 	    var transition = svg.transition().duration(500);
 
 	    transition.selectAll(".bar")
