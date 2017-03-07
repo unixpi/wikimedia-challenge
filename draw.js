@@ -1,8 +1,4 @@
 function draw() {
-    // TODO
-    // define necessary static components in html + css
-    // Repeat for bot wikipedia edit component
-    
     //STATE
     var queue = [];
     var anonState = {posEdits: 0,
@@ -20,7 +16,6 @@ function draw() {
 		      posBytes: 0,
 		      negBytes: 0
 		     };
-
     //END OF STATE
 
     //SETUP    
@@ -54,17 +49,13 @@ function draw() {
 
     eventSource.onopen = function(event) {
 	console.log('--- Opened connection.');
-
 	//draw barcharts after short delay
 	window.setTimeout(function() { return barchart(0) }, 2500 );
 	window.setTimeout(function() { return barchart(1) }, 2600 );
 	window.setTimeout(function() { return barchart(2) }, 2700 );
 	window.setTimeout(function() { return barchart(3) }, 2800 );
 	window.setTimeout(function() { return barchart(4) }, 2900 );
-	window.setTimeout(function() { return barchart(5) }, 3000 );
-	
-	
-	
+	window.setTimeout(function() { return barchart(5) }, 3000 );	
     };
 
     eventSource.onerror = function(event) {
@@ -102,7 +93,6 @@ function draw() {
 	
 		
     };
-
     
     //***********************************STATS COMPONENT*************************************//
     //update stats
@@ -136,9 +126,8 @@ function draw() {
 		(Math.round((state.posBytes / state.posEdits)) + " bytes");
 	}
     }
-
     
-    //********************************BARCHART COMPONENT************************************//
+    //********************************BARCHART COMPONENT AND DATA************************************//
     var totalEditsData = [{"name": "Bots","value": (botState.posEdits + botState.negEdits) /
 			   (anonState.posEdits + anonState.negEdits + humanState.posEdits + humanState.negEdits
 			    + botState.posEdits + botState.negEdits)},
@@ -274,9 +263,8 @@ function draw() {
 		.domain(data.map(function (d) {
 		    return d.name;
 		}));
-    
 
-//	var formatPercent = d3.format("%");
+//	var formatPercent = d3.format(".0%");
 
 	var yAxis = d3.svg.axis()
 	    .scale(y)
@@ -286,7 +274,7 @@ function draw() {
 	var xAxis = d3.svg.axis()
 	    .scale(x)
 	    .tickSize(0)
-//	    .tickFormat(formatPercent)
+	//	    .tickFormat(formatPercent)
 	    .ticks(5)
 	    .orient("bottom");
 
@@ -325,12 +313,6 @@ function draw() {
 		return y(d.name) + y.rangeBand() / 2 + 4;
 	    })
 
-	//d3.select("input").on("change", change);
-
-//	var sortTimeout = window.setTimeout(function() {
-//	    d3.select("input").property("checked", true).each(change);
-	//	}, 1000);
-
 	window.setInterval(change, 600);
 	
 	function change() {
@@ -358,16 +340,12 @@ function draw() {
 	    }())
 	
 	    var transition = svg.transition().duration(500);
-
 	    transition.selectAll(".bar")
 	    	.attr("width", function (d,i) {
 		    var newWidth = x(data[i]["value"]) * 100;
 		    return newWidth !== newWidth ? 0 : newWidth 
 		});
-
-
 	}
-
     }    
     //***********************************GLOBE COMPONENT*************************************//
     //updateGlobe
