@@ -52,6 +52,7 @@ body {
     font-weight: 600;
     text-transform: uppercase;
     color: rgb(54,69,79);
+    
 }
 
 .purple {
@@ -248,7 +249,6 @@ canvas {
 
 .bytesWrapper {
     margin-bottom: 0.5rem;
-    width: 180px;
     display: inline-block;
 }  
 
@@ -261,6 +261,22 @@ canvas {
     background: white;
     color: rgb(54,69,79);
     font-weight: 400;
+}
+
+.about-text {
+    margin-top: -1rem;
+}
+
+#comparisons {
+
+}
+
+.about-text {
+    margin-top: -1rem;
+}
+
+.barcharts-container {
+    margin-bottom: 1rem;
 }
 
 @media screen and (min-width: 750px) {
@@ -279,10 +295,9 @@ canvas {
     }
 
     #main-main-title {
+	margin-left: -2rem;
 	margin-top: 1.2rem;
 	margin-bottom: -0.2rem;
-	font-size: 1.5rem;
-	letter-spacing: 0.1em;
     }
 
     .minimal-barchart {
@@ -293,11 +308,5 @@ canvas {
 	vertical-align: top;
 	margin-left: 2rem;
     }
-
-    .about-text {
-	margin-top: -1rem;
-    }
-
 }
-
 
