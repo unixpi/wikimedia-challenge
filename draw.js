@@ -60,6 +60,9 @@ function draw() {
 	window.setTimeout(function() { return barchart(1) }, 2600 );
 	window.setTimeout(function() { return barchart(2) }, 2700 );
 	window.setTimeout(function() { return barchart(3) }, 2800 );
+	window.setTimeout(function() { return barchart(4) }, 2900 );
+	window.setTimeout(function() { return barchart(5) }, 3000 );
+	
 	
 	
     };
@@ -161,6 +164,20 @@ function draw() {
 			{"name": "Anon","value": (anonState.posBytes - anonState.negBytes) /
 			 ((anonState.posEdits + anonState.negEdits) * 100)}];
 
+    var avgPosBytesData = [{"name": "Bots","value": (botState.posBytes)/
+			 ((botState.posEdits) * 100)},
+			{"name": "Humans","value": (humanState.posBytes) /
+			 ((humanState.posEdits) * 100)},
+			{"name": "Anon","value": (anonState.posBytes) /
+			 ((anonState.posEdits) * 100)}];
+
+    var avgNegBytesData = [{"name": "Bots","value": (-botState.negBytes)/
+			 ((botState.negEdits) * 100)},
+			{"name": "Humans","value": (-humanState.negBytes) /
+			 ((humanState.negEdits) * 100)},
+			{"name": "Anon","value": (-anonState.negBytes) /
+			 ((anonState.negEdits) * 100)}];
+    
     window.setInterval(function() {
 	totalEditsData = [{"name": "Bots","value": (botState.posEdits + botState.negEdits) /
 			   (anonState.posEdits + anonState.negEdits + humanState.posEdits + humanState.negEdits
@@ -186,12 +203,28 @@ function draw() {
 			 ((humanState.posEdits + humanState.negEdits) * 100)},
 			{"name": "Anon","value": (anonState.posBytes - anonState.negBytes) /
 			 ((anonState.posEdits + anonState.negEdits) * 100)}];
+
+	avgPosBytesData = [{"name": "Bots","value": (botState.posBytes)/
+			 ((botState.posEdits) * 100)},
+			{"name": "Humans","value": (humanState.posBytes) /
+			 ((humanState.posEdits) * 100)},
+			{"name": "Anon","value": (anonState.posBytes) /
+			 ((anonState.posEdits) * 100)}];
+
+	avgNegBytesData = [{"name": "Bots","value": (-botState.negBytes)/
+			 ((botState.negEdits) * 100)},
+			{"name": "Humans","value": (-humanState.negBytes) /
+			 ((humanState.negEdits) * 100)},
+			{"name": "Anon","value": (-anonState.negBytes) /
+			 ((anonState.negEdits) * 100)}];
     }, 500);
 
     function barchart(dataset) {
 
 	var titles = ['Percentage of Total Edits Made', 'Percentage of Edits That Are Additive',
-		      'Percentage of Edits That Are Subtractive','Average Size Of An Edit (Bytes)']
+		      'Percentage of Edits That Are Subtractive','Average Size Of An Edit (Bytes)',
+		      'Average Size Of An Additive Edit (Bytes)','Average Size Of A Subtractive Edit (Bytes)'
+		      ]
 	d3.select(".barcharts-container")
 	    .append('div')
 	    .attr('class','stats-container')
@@ -283,7 +316,7 @@ function draw() {
 	    .attr("height", y.rangeBand())
 	    .attr("x", 0)
 	    .attr("width", function (d) {
-		return x(d.value);
+		return x(d.value) !== x(d.value) ? 0 : x(d.value);
 	    });
 
 	bars.append("text")
@@ -315,7 +348,12 @@ function draw() {
 		case 3 :
 		    return avgBytesData;
 		    break;
-
+		case 4 :
+		    return avgPosBytesData;
+		    break;
+		case 5 :
+		    return avgNegBytesData;
+		    break;
 		}
 	    }())
 	
@@ -323,7 +361,8 @@ function draw() {
 
 	    transition.selectAll(".bar")
 	    	.attr("width", function (d,i) {
-		    return x(data[i]["value"] * 100);
+		    var newWidth = x(data[i]["value"]) * 100;
+		    return newWidth !== newWidth ? 0 : newWidth 
 		});
 
 
