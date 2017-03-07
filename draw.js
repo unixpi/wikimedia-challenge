@@ -1,5 +1,4 @@
 function draw() {
-    //TODO : add about section, desktop version, backup heroku server
     //STATE
     var queue = [];
     var anonState = {posEdits: 0,
@@ -50,14 +49,9 @@ function draw() {
 
     eventSource.onopen = function(event) {
 	console.log('--- Opened connection.');
-
-	//drawbarcharts
+	//draw barcharts here
 	barchart(0);
-//	barchart(1);
-//	barchart(2);
-	barchart(3);
-//	barchart(4);
-//	barchart(5);
+	barchart(1);
     };
 
     eventSource.onerror = function(event) {
@@ -92,8 +86,6 @@ function draw() {
 	    dict.magnitude = magnitude;
 	    updateStats(dict,botState,'Bot');
 	}
-	
-		
     };
     
     //***********************************STATS COMPONENT*************************************//
@@ -129,226 +121,6 @@ function draw() {
 	}
     }
     
-    //********************************BARCHART COMPONENT AND DATA************************************//
-    var totalEditsData = [{"name": "Bots","value": (botState.posEdits + botState.negEdits) /
-			   (anonState.posEdits + anonState.negEdits + humanState.posEdits + humanState.negEdits
-			    + botState.posEdits + botState.negEdits)},
-			  {"name": "Humans","value": (humanState.posEdits + humanState.negEdits) /
-			   (anonState.posEdits + anonState.negEdits + botState.posEdits + botState.negEdits
-			    + humanState.posEdits + humanState.negEdits)},
-			  {"name": "Anon","value": (anonState.posEdits + anonState.negEdits) /
-			   (botState.posEdits + botState.negEdits + humanState.posEdits + humanState.negEdits
-			    +anonState.posEdits + anonState.negEdits)}];
-
-    var posEditsData = [{"name": "Bots","value": botState.posEdits / (botState.posEdits + botState.negEdits)},
-			{"name": "Humans","value": humanState.posEdits / (humanState.posEdits + humanState.negEdits)},
-			{"name": "Anon","value": anonState.posEdits / (anonState.posEdits + anonState.negEdits)}];
-
-    var negEditsData = [{"name": "Bots","value": botState.negEdits / (botState.posEdits + botState.negEdits)},
-			{"name": "Humans","value": humanState.negEdits / (humanState.posEdits + humanState.negEdits)},
-			{"name": "Anon","value": anonState.negEdits / (anonState.posEdits + anonState.negEdits)}];
-
-    var avgBytesData = [{"name": "Bots","value": (botState.posBytes - botState.negBytes) /
-			 ((botState.posEdits + botState.negEdits) * 100)},
-			{"name": "Humans","value": (humanState.posBytes - humanState.negBytes) /
-			 ((humanState.posEdits + humanState.negEdits) * 100)},
-			{"name": "Anon","value": (anonState.posBytes - anonState.negBytes) /
-			 ((anonState.posEdits + anonState.negEdits) * 100)}];
-
-    var avgPosBytesData = [{"name": "Bots","value": (botState.posBytes)/
-			 ((botState.posEdits) * 100)},
-			{"name": "Humans","value": (humanState.posBytes) /
-			 ((humanState.posEdits) * 100)},
-			{"name": "Anon","value": (anonState.posBytes) /
-			 ((anonState.posEdits) * 100)}];
-
-    var avgNegBytesData = [{"name": "Bots","value": (-botState.negBytes)/
-			 ((botState.negEdits) * 100)},
-			{"name": "Humans","value": (-humanState.negBytes) /
-			 ((humanState.negEdits) * 100)},
-			{"name": "Anon","value": (-anonState.negBytes) /
-			 ((anonState.negEdits) * 100)}];
-    
-    window.setInterval(function() {
-	totalEditsData = [{"name": "Bots","value": (botState.posEdits + botState.negEdits) /
-			   (anonState.posEdits + anonState.negEdits + humanState.posEdits + humanState.negEdits
-			    + botState.posEdits + botState.negEdits)},
-			  {"name": "Humans","value": (humanState.posEdits + humanState.negEdits) /
-			   (anonState.posEdits + anonState.negEdits + botState.posEdits + botState.negEdits
-			    + humanState.posEdits + humanState.negEdits)},
-			  {"name": "Anon","value": (anonState.posEdits + anonState.negEdits) /
-			   (botState.posEdits + botState.negEdits + humanState.posEdits + humanState.negEdits
-			    +anonState.posEdits + anonState.negEdits)}];
-
-	posEditsData = [{"name": "Bots","value": botState.posEdits / (botState.posEdits + botState.negEdits)},
-			{"name": "Humans","value": humanState.posEdits / (humanState.posEdits + humanState.negEdits)},
-			{"name": "Anon","value": anonState.posEdits / (anonState.posEdits + anonState.negEdits)}];
-
-	negEditsData = [{"name": "Bots","value": botState.negEdits / (botState.posEdits + botState.negEdits)},
-			{"name": "Humans","value": humanState.negEdits / (humanState.posEdits + humanState.negEdits)},
-			{"name": "Anon","value": anonState.negEdits / (anonState.posEdits + anonState.negEdits)}];
-
-	avgBytesData = [{"name": "Bots","value": (botState.posBytes - botState.negBytes) /
-			     ((botState.posEdits + botState.negEdits) * 100)},
-			{"name": "Humans","value": (humanState.posBytes - humanState.negBytes) /
-			 ((humanState.posEdits + humanState.negEdits) * 100)},
-			{"name": "Anon","value": (anonState.posBytes - anonState.negBytes) /
-			 ((anonState.posEdits + anonState.negEdits) * 100)}];
-
-	avgPosBytesData = [{"name": "Bots","value": (botState.posBytes)/
-			 ((botState.posEdits) * 100)},
-			{"name": "Humans","value": (humanState.posBytes) /
-			 ((humanState.posEdits) * 100)},
-			{"name": "Anon","value": (anonState.posBytes) /
-			 ((anonState.posEdits) * 100)}];
-
-	avgNegBytesData = [{"name": "Bots","value": (-botState.negBytes)/
-			 ((botState.negEdits) * 100)},
-			{"name": "Humans","value": (-humanState.negBytes) /
-			 ((humanState.negEdits) * 100)},
-			{"name": "Anon","value": (-anonState.negBytes) /
-			 ((anonState.negEdits) * 100)}];
-    }, 500);
-
-    function barchart(dataset) {
-
-	var titles = ['Percentage of Total Edits Made', 'Percentage of Edits That Are Additive',
-		      'Percentage of Edits That Are Subtractive','Average Size Of An Edit (Bytes)',
-		      'Average Size Of An Additive Edit (Bytes)','Average Size Of A Subtractive Edit (Bytes)'
-		      ]
-	d3.select(".barcharts-container")
-	    .append('div')
-	    .attr('class','stats-container minimal-barchart')
-	    .append('div')
-	    .attr('class','barcharts-title')
-	    .html(titles[dataset]);
-	
-	//placeholder data
-	var data = [{"name": "Bots","value": 0},
-		    {"name": "Humans","value":0 },
-		    {"name": "Anon","value": 0 }];
-		   
-	var margin = {
-	    top: 15,
-	    right: 25,
-	    bottom: 15,
-	    left: 94
-	};
-
-	var width = 320 - margin.left - margin.right,
-	    height = 120 - margin.top - margin.bottom;
-
-	var svg = d3.select(".barcharts-container").append("svg")
-	    .attr("width", width + margin.left + margin.right)
-	    .attr("height", height + margin.top + margin.bottom)
-	    .append("g")
-	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-	if (dataset < 3) {	    
-	    var x = d3.scale.linear()
-		.range([0, width])
-		.domain([0,100]);
-	}
-
-	else {
-	    var x = d3.scale.linear()
-		.range([0, width])
-		.domain([0,1000]);
-	}
-	
-//	    .domain([0, d3.max(data, function (d) {
-//		return d.value;
-	//	    })]);
-
-	var y = d3.scale.ordinal()
-		.rangeRoundBands([height, 0], .5)
-		.domain(data.map(function (d) {
-		    return d.name;
-		}));
-
-//	var formatPercent = d3.format(".0%");
-
-	var yAxis = d3.svg.axis()
-	    .scale(y)
-	    .tickSize(0)
-	    .orient("left");
-
-	var xAxis = d3.svg.axis()
-	    .scale(x)
-	    .tickSize(0)
-	//	    .tickFormat(formatPercent)
-	    .ticks(5)
-	    .orient("bottom");
-
-	var gy = svg.append("g")
-	    .attr("class", "y axis")
-	    .call(yAxis)
-	    .selectAll("text")
-	    .attr("y", 0)
-	    .attr("x", -55)
-	    .style("text-anchor", "start");
-
-	var gx = svg.append("g")
-	    .attr("class", "x axis")
-	    .attr("transform", "translate(0,-5)")
-	    .call(xAxis);
-
-	var bars = svg.selectAll(".bar")
-	    .data(data)
-	    .enter()
-	    .append("g");
-
-	bars.append("rect")
-	    .attr("class", "bar")
-	    .attr("y", function (d) {
-		return y(d.name);
-	    })
-	    .attr("height", y.rangeBand())
-	    .attr("x", 0)
-	    .attr("width", function (d) {
-		return x(d.value) !== x(d.value) ? 0 : x(d.value);
-	    });
-
-	bars.append("text")
-	    .attr("class", "label")
-	    .attr("y", function (d) {
-		return y(d.name) + y.rangeBand() / 2 + 4;
-	    })
-
-	window.setInterval(change, 600);
-	
-	function change() {
-	    var data = (function() {
-		switch(dataset) {
-		case 0 :
-		    return totalEditsData;
-		    break;
-		case 1 :
-		    return posEditsData;
-		    break;
-		case 2 :
-		    return negEditsData;
-		    break;
-		case 3 :
-		    return avgBytesData;
-		    break;
-		case 4 :
-		    return avgPosBytesData;
-		    break;
-		case 5 :
-		    return avgNegBytesData;
-		    break;
-		}
-	    }())
-	
-	    var transition = svg.transition().duration(500);
-	    transition.selectAll(".bar")
-	    	.attr("width", function (d,i) {
-		    var newWidth = x(data[i]["value"]) * 100;
-		    return newWidth !== newWidth ? 0 : newWidth 
-		});
-	}
-    }    
     //***********************************GLOBE COMPONENT*************************************//
     //updateGlobe
     function updateGlobe(dict) {
@@ -471,6 +243,161 @@ function draw() {
 //	window.setTimeout(updateMap, 3000);
 	window.setInterval(updateMap, 5000);
     });
+
+    //********************************BARCHART COMPONENT AND DATA************************************//
+    var totalEditsData = [{"name": "Bots","value": (botState.posEdits + botState.negEdits) /
+			   (anonState.posEdits + anonState.negEdits + humanState.posEdits + humanState.negEdits
+			    + botState.posEdits + botState.negEdits)},
+			  {"name": "Humans","value": (humanState.posEdits + humanState.negEdits) /
+			   (anonState.posEdits + anonState.negEdits + botState.posEdits + botState.negEdits
+			    + humanState.posEdits + humanState.negEdits)},
+			  {"name": "Anon","value": (anonState.posEdits + anonState.negEdits) /
+			   (botState.posEdits + botState.negEdits + humanState.posEdits + humanState.negEdits
+			    +anonState.posEdits + anonState.negEdits)}];
+
+    var avgBytesData = [{"name": "Bots","value": (botState.posBytes - botState.negBytes) /
+			 ((botState.posEdits + botState.negEdits) * 100)},
+			{"name": "Humans","value": (humanState.posBytes - humanState.negBytes) /
+			 ((humanState.posEdits + humanState.negEdits) * 100)},
+			{"name": "Anon","value": (anonState.posBytes - anonState.negBytes) /
+			 ((anonState.posEdits + anonState.negEdits) * 100)}];
+
+    window.setInterval(function() {
+	totalEditsData = [{"name": "Bots","value": (botState.posEdits + botState.negEdits) /
+			   (anonState.posEdits + anonState.negEdits + humanState.posEdits + humanState.negEdits
+			    + botState.posEdits + botState.negEdits)},
+			  {"name": "Humans","value": (humanState.posEdits + humanState.negEdits) /
+			   (anonState.posEdits + anonState.negEdits + botState.posEdits + botState.negEdits
+			    + humanState.posEdits + humanState.negEdits)},
+			  {"name": "Anon","value": (anonState.posEdits + anonState.negEdits) /
+			   (botState.posEdits + botState.negEdits + humanState.posEdits + humanState.negEdits
+			    +anonState.posEdits + anonState.negEdits)}];
+	
+	avgBytesData = [{"name": "Bots","value": (botState.posBytes - botState.negBytes) /
+			     ((botState.posEdits + botState.negEdits) * 100)},
+			{"name": "Humans","value": (humanState.posBytes - humanState.negBytes) /
+			 ((humanState.posEdits + humanState.negEdits) * 100)},
+			{"name": "Anon","value": (anonState.posBytes - anonState.negBytes) /
+			 ((anonState.posEdits + anonState.negEdits) * 100)}];
+    }, 500);
+
+    function barchart(dataset) {
+
+	var titles = ['Percentage of Total Edits Made','Average Size Of An Edit (Bytes)'];
+	d3.select(".barcharts-container")
+	    .append('div')
+	    .attr('class','stats-container minimal-barchart')
+	    .append('div')
+	    .attr('class','barcharts-title')
+	    .html(titles[dataset]);
+	
+	//placeholder data while we wait for eventStream to send data
+	var data = [{"name": "Bots","value": 0},
+		    {"name": "Humans","value":0 },
+		    {"name": "Anon","value": 0 }];
+		   
+	var margin = {
+	    top: 15,
+	    right: 25,
+	    bottom: 15,
+	    left: 94
+	};
+
+	var width = 320 - margin.left - margin.right,
+	    height = 120 - margin.top - margin.bottom;
+
+	var svg = d3.select(".barcharts-container").append("svg")
+	    .attr("width", width + margin.left + margin.right)
+	    .attr("height", height + margin.top + margin.bottom)
+	    .append("g")
+	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	if (dataset === 0) {	    
+	    var x = d3.scale.linear()
+		.range([0, width])
+		.domain([0,100]);
+	}
+
+	else {
+	    var x = d3.scale.linear()
+		.range([0, width])
+		.domain([0,1000]);
+	}
+
+	var y = d3.scale.ordinal()
+		.rangeRoundBands([height, 0], .5)
+		.domain(data.map(function (d) {
+		    return d.name;
+		}));
+
+	var yAxis = d3.svg.axis()
+	    .scale(y)
+	    .tickSize(0)
+	    .orient("left");
+
+	var xAxis = d3.svg.axis()
+	    .scale(x)
+	    .tickSize(0)
+	    .ticks(5)
+	    .orient("bottom");
+
+	var gy = svg.append("g")
+	    .attr("class", "y axis")
+	    .call(yAxis)
+	    .selectAll("text")
+	    .attr("y", 0)
+	    .attr("x", -55)
+	    .style("text-anchor", "start");
+
+	var gx = svg.append("g")
+	    .attr("class", "x axis")
+	    .attr("transform", "translate(0,-5)")
+	    .call(xAxis);
+
+	var bars = svg.selectAll(".bar")
+	    .data(data)
+	    .enter()
+	    .append("g");
+
+	bars.append("rect")
+	    .attr("class", "bar")
+	    .attr("y", function (d) {
+		return y(d.name);
+	    })
+	    .attr("height", y.rangeBand())
+	    .attr("x", 0)
+	    .attr("width", function (d) {
+		return x(d.value) !== x(d.value) ? 0 : x(d.value);
+	    });
+
+	bars.append("text")
+	    .attr("class", "label")
+	    .attr("y", function (d) {
+		return y(d.name) + y.rangeBand() / 2 + 4;
+	    })
+
+	window.setInterval(change, 600);
+	
+	function change() {
+	    var data = (function() {
+		switch(dataset) {
+		case 0 :
+		    return totalEditsData;
+		    break;
+		case 1 :
+		    return avgBytesData;
+		    break;
+		}
+	    }())
+	
+	    var transition = svg.transition().duration(500);
+	    transition.selectAll(".bar")
+	    	.attr("width", function (d,i) {
+		    var newWidth = x(data[i]["value"]) * 100;
+		    return newWidth !== newWidth ? 0 : newWidth 
+		});
+	}
+    }    
 
     //HELPER FUNCTIONS
     function getJSON(url, callback) {

@@ -24,18 +24,6 @@ body {
     display: inline-block;
 }
 
-.anonymous-edits-container {
-
-}
-
-.registered-human-edits-container {
-
-}
-
-.bot-edits-container {
-
-}
-
 .barcharts-container {
     display: inline-block;
 }
@@ -139,7 +127,6 @@ canvas {
 
 .Negative {
     padding: 5px;
-//    border-radius: 3px;
     border: rgb(240,240,240) solid 1px;
     color: rgba(227, 38, 54,0.8);
     width: 110px;
@@ -157,53 +144,13 @@ canvas {
 
 .averageNeg {
     padding: 5px;
-//    border-radius: 3px;
     border: rgb(240,240,240) solid 1px;
     color: rgba(227, 38, 54,0.8);
     width: 150px;
     border-bottom-right-radius: 4px;
 }
 
-/*
-.Positive {
-    background: rgba(0,0,200,0.5);
-    padding: 5px;
-    border-radius: 3px;
-    color: white;
-    width: 110px;
-}
-
-.Negative {
-    padding: 5px;
-    background: rgba(227, 38, 54,0.8);
-    border-radius: 3px;
-    color: white;
-    width: 110px;
-}
-
-.averagePos {
-    padding: 5px;
-    border-radius: 3px;
-    background: rgba(0,0,200,0.5);
-    width: 150px;
-    color: white;
-}
-
-.averageNeg {
-    padding: 5px;
-    border-radius: 3px;
-    color: white;
-    width: 150px;
-    background: rgba(227, 38, 54,0.8);
-}
-*/
-.counter {
-//    margin-bottom: 0.2rem;
-    
-}
-
 .bytesCounter {
-    //    margin-bottom: 0.2rem;
     margin-left: -0.2rem;
 }
 
@@ -217,7 +164,6 @@ canvas {
     border-right: rgb(240,240,240) solid 1px;
     color: grey;
     width: 271px;
-//    margin-bottom: 0.2rem;
 }
 
 #totalEditsAnon {
@@ -279,11 +225,6 @@ canvas {
 	max-width: 750px;
 	padding-left: 2rem;
     }
-    #canvas-container {
-	
-    }
-    .all-edits-container {
-    }
 
     .barcharts-container {
 	margin-top: -3.5rem;
@@ -295,9 +236,6 @@ canvas {
 	margin-bottom: -0.1rem;
 	font-size: 1rem;
 	margin-left: 0.2rem;
-    }
-
-    .minimal-barchart {
     }
 
     .about {
