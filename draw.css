@@ -11,8 +11,8 @@ body {
     margin-top: 1.5rem;
     font-size: 0.9rem;
     text-transform: uppercase;
-    letter-spacing: 0.03em;
-    font-weight: 200;
+    letter-spacing: 0.06em;
+    font-weight: 400;
     color: grey;
 //    color: rgb(120, 81, 169);
 }
@@ -26,7 +26,9 @@ body {
 
 .axis {
     font-size: 13px;
-    fill: grey;
+    font-family: 'Gill Sans', 'Gill Sans MT', 'Times New Roman','Times', sans-serif;
+    font-weight: 200;
+    fill: rgb(200,200,200);
 }
 
 .barcharts-title {
@@ -77,7 +79,6 @@ canvas {
 .stats-container {
     display: inline-block;
     margin-left: 2rem;
-    border-radius: 3px;
     margin-bottom: 1rem;
 }
 
@@ -86,6 +87,39 @@ canvas {
     margin-bottom: -1rem;
 }
 
+.Positive {
+    padding: 5px;
+//    border-radius: 3px;
+    border: rgb(240,240,240) solid 1px;
+    color: rgba(0,0,200,0.5);
+    width: 110px;
+}
+
+.Negative {
+    padding: 5px;
+//    border-radius: 3px;
+    border: rgb(240,240,240) solid 1px;
+    color: rgba(227, 38, 54,0.8);
+    width: 110px;
+}
+
+.averagePos {
+    padding: 5px;
+//    border-radius: 3px;
+    border: rgb(240,240,240) solid 1px;
+    color: rgba(0,0,200,0.5);
+    width: 150px;
+}
+
+.averageNeg {
+    padding: 5px;
+//    border-radius: 3px;
+    border: rgb(240,240,240) solid 1px;
+    color: rgba(227, 38, 54,0.8);
+    width: 150px;
+}
+
+/*
 .Positive {
     background: rgba(0,0,200,0.5);
     padding: 5px;
@@ -117,24 +151,25 @@ canvas {
     width: 150px;
     background: rgba(227, 38, 54,0.8);
 }
-
+*/
 .counter {
-    margin-bottom: 0.2rem;
+//    margin-bottom: 0.2rem;
     
 }
 
 .bytesCounter {
-    margin-bottom: 0.2rem;
+    //    margin-bottom: 0.2rem;
+    margin-left: -0.2rem;
 }
 
 .totalNumber {
     padding: 5px;
     background: white;
-    border-radius: 3px;
-    border: lightgrey solid 1px;
+//    border-radius: 3px;
+    border: rgb(240,240,240) solid 1px;
     color: grey;
-    width: 272px;
-    margin-bottom: 0.2rem;
+    width: 271px;
+//    margin-bottom: 0.2rem;
 }
 
 #totalEditsAnon {
@@ -174,14 +209,14 @@ canvas {
     margin-top: 0rem;
     margin-bottom: 0.25rem;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
     padding: 6px;
     text-align: center;
     width: 272px;
     background: white;
     border-radius: 3px;
     color: grey;
-    font-weight: 200;
+    font-weight: 400;
 }
 
 
