@@ -59,6 +59,8 @@ function draw() {
 	window.setTimeout(function() { return barchart(0) }, 2500 );
 	window.setTimeout(function() { return barchart(1) }, 2600 );
 	window.setTimeout(function() { return barchart(2) }, 2700 );
+	window.setTimeout(function() { return barchart(3) }, 2800 );
+	
 	
     };
 
@@ -152,6 +154,13 @@ function draw() {
 			{"name": "Humans","value": humanState.negEdits / (humanState.posEdits + humanState.negEdits)},
 			{"name": "Anon","value": anonState.negEdits / (anonState.posEdits + anonState.negEdits)}];
 
+    var avgBytesData = [{"name": "Bots","value": (botState.posBytes - botState.negBytes) /
+			 ((botState.posEdits + botState.negEdits) * 100)},
+			{"name": "Humans","value": (humanState.posBytes - humanState.negBytes) /
+			 ((humanState.posEdits + humanState.negEdits) * 100)},
+			{"name": "Anon","value": (anonState.posBytes - anonState.negBytes) /
+			 ((anonState.posEdits + anonState.negEdits) * 100)}];
+
     window.setInterval(function() {
 	totalEditsData = [{"name": "Bots","value": (botState.posEdits + botState.negEdits) /
 			   (anonState.posEdits + anonState.negEdits + humanState.posEdits + humanState.negEdits
@@ -170,12 +179,19 @@ function draw() {
 	negEditsData = [{"name": "Bots","value": botState.negEdits / (botState.posEdits + botState.negEdits)},
 			{"name": "Humans","value": humanState.negEdits / (humanState.posEdits + humanState.negEdits)},
 			{"name": "Anon","value": anonState.negEdits / (anonState.posEdits + anonState.negEdits)}];
+
+	avgBytesData = [{"name": "Bots","value": (botState.posBytes - botState.negBytes) /
+			     ((botState.posEdits + botState.negEdits) * 100)},
+			{"name": "Humans","value": (humanState.posBytes - humanState.negBytes) /
+			 ((humanState.posEdits + humanState.negEdits) * 100)},
+			{"name": "Anon","value": (anonState.posBytes - anonState.negBytes) /
+			 ((anonState.posEdits + anonState.negEdits) * 100)}];
     }, 500);
 
     function barchart(dataset) {
 
 	var titles = ['Percentage of Total Edits Made', 'Percentage of Edits That Are Additive',
-		      'Percentage of Edits That Are Subtractive']
+		      'Percentage of Edits That Are Subtractive','Average Size Of An Edit (Bytes)']
 	d3.select(".barcharts-container")
 	    .append('div')
 	    .attr('class','stats-container')
@@ -203,19 +219,29 @@ function draw() {
 	    .attr("height", height + margin.top + margin.bottom)
 	    .append("g")
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	if (dataset < 3) {	    
+	    var x = d3.scale.linear()
+		.range([0, width])
+		.domain([0,100]);
+	}
+
+	else {
+	    var x = d3.scale.linear()
+		.range([0, width])
+		.domain([0,1000]);
+	}
 	
-	var x = d3.scale.linear()
-	    .range([0, width])
-	    .domain([0,100]);
 //	    .domain([0, d3.max(data, function (d) {
 //		return d.value;
-//	    })]);
+	//	    })]);
 
 	var y = d3.scale.ordinal()
-	    .rangeRoundBands([height, 0], .5)
-	    .domain(data.map(function (d) {
-		return d.name;
-	    }));
+		.rangeRoundBands([height, 0], .5)
+		.domain(data.map(function (d) {
+		    return d.name;
+		}));
+    
 
 //	var formatPercent = d3.format("%");
 
@@ -286,6 +312,10 @@ function draw() {
 		case 2 :
 		    return negEditsData;
 		    break;
+		case 3 :
+		    return avgBytesData;
+		    break;
+
 		}
 	    }())
 	
