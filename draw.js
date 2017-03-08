@@ -43,7 +43,7 @@ function draw() {
 	.attr("d", path);
 
     var url = 'https://stream.wikimedia.org/v2/stream/recentchange';
-
+    
     console.log('Connecting to EventStreams at ' + url);
     var eventSource = new EventSource(url);
 
@@ -56,6 +56,8 @@ function draw() {
 
     eventSource.onerror = function(event) {
 	console.error('--- Encountered error', event);
+	var caption = d3.select('.caption');
+	caption.html("Sorry :(, unable to connect, please try again later");
     };
 
     eventSource.onmessage = function(event) {
